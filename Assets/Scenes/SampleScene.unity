@@ -411,7 +411,7 @@ PrefabInstance:
       objectReference: {fileID: -2898074000106471073, guid: 0f0f748fdd4d5084ea1b33204a206c88, type: 3}
     - target: {fileID: 8510075198127005037, guid: 0f0f748fdd4d5084ea1b33204a206c88, type: 3}
       propertyPath: m_SelectedEditorRenderState
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
