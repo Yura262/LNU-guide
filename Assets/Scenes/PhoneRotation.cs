@@ -159,7 +159,10 @@ public class PhoneRotation : MonoBehaviour
         heading = Input.compass.rawVector;
         filterUpdate(acceleration, RotationRate, heading);
         Debug.Log(SEq);
-
+        Debug.Log(attitude);
+        Debug.Log(RotationRate);
+        Debug.Log(acceleration);
+        Debug.Log(heading);
     }
 
 
