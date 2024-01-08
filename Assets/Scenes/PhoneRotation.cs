@@ -19,7 +19,7 @@ public class PhoneRotation : MonoBehaviour
 
     Vector3 w_b = Vector3.zero; // estimate gyroscope biases error
                                 // Function to compute one filter iteration
-    private void filterUpdate(Vector3 w, Vector3 a, Vector3 m)
+    private Quaternion filterUpdate(Vector3 w, Vector3 a, Vector3 m)
     {
         // local system variables
         //float norm; // vector norm
@@ -131,6 +131,7 @@ public class PhoneRotation : MonoBehaviour
         // normalise the flux vector to have only components in the x and z
         b_x = Mathf.Sqrt((h.x * h.x) + (h.y * h.y));
         b_z = h.z;
+        return SEq;
     }
 
 
@@ -157,12 +158,9 @@ public class PhoneRotation : MonoBehaviour
         RotationRate = Input.gyro.rotationRate;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
-        filterUpdate(acceleration, RotationRate, heading);
+        SEq = filterUpdate(acceleration, RotationRate, heading);
         Debug.Log(SEq);
-        Debug.Log(attitude);
-        Debug.Log(RotationRate);
-        Debug.Log(acceleration);
-        Debug.Log(heading);
+
     }
 
 
