@@ -178,8 +178,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8795812198459622360, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 530560359}
   m_SourcePrefab: {fileID: 100100000, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
+--- !u!1 &530560358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8795812198459622360, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
+  m_PrefabInstance: {fileID: 530560357}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &530560359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530560358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3c14cd08b9754e4892d3de50985c378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attitude: {x: 0, y: 0, z: 0, w: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  heading: {x: 0, y: 0, z: 0}
+  RotationRate: {x: 0, y: 0, z: 0}
+  EstimateOfOrientation_q_est: {x: 1, y: 0, z: 0, w: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
