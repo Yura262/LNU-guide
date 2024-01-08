@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhoneRotation1 : MonoBehaviour
 {
-    float deltat = 0.02f; // sampling period in seconds (shown as 1 ms)
+    //float Time.deltaTime = 0.02f; // sampling period in seconds (shown as 1 ms)
     static float gyroMeasError = 3.14159265358979f * (5.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
     static float gyroMeasDrift = 3.14159265358979f * (0.2f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
     float beta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
@@ -100,9 +100,9 @@ public class PhoneRotation1 : MonoBehaviour
         w_err.y = twoSEq_1 * SEqHatDot.z + twoSEq_2 * SEqHatDot.w - twoSEq_3 * SEqHatDot.x - twoSEq_4 * SEqHatDot.y;
         w_err.z = twoSEq_1 * SEqHatDot.w - twoSEq_2 * SEqHatDot.z + twoSEq_3 * SEqHatDot.y - twoSEq_4 * SEqHatDot.x;
         // compute and remove the gyroscope baises
-        w_b.x += w_err.x * deltat * zeta;
-        w_b.y += w_err.y * deltat * zeta;
-        w_b.z += w_err.z * deltat * zeta;
+        w_b.x += w_err.x * Time.deltaTime * zeta;
+        w_b.y += w_err.y * Time.deltaTime * zeta;
+        w_b.z += w_err.z * Time.deltaTime * zeta;
         w.x -= w_b.x;
         w.y -= w_b.y;
         w.z -= w_b.z;
@@ -112,10 +112,10 @@ public class PhoneRotation1 : MonoBehaviour
         SEqDot_omega.z = halfSEq_1 * w.y - halfSEq_2 * w.z + halfSEq_4 * w.x;
         SEqDot_omega.w = halfSEq_1 * w.z + halfSEq_2 * w.y - halfSEq_3 * w.x;
         // compute then integrate the estimated quaternion rate
-        SEq.x += (SEqDot_omega.x - (beta * SEqHatDot.x)) * deltat;
-        SEq.y += (SEqDot_omega.y - (beta * SEqHatDot.y)) * deltat;
-        SEq.z += (SEqDot_omega.z - (beta * SEqHatDot.z)) * deltat;
-        SEq.w += (SEqDot_omega.w - (beta * SEqHatDot.w)) * deltat;
+        SEq.x += (SEqDot_omega.x - (beta * SEqHatDot.x)) * Time.deltaTime;
+        SEq.y += (SEqDot_omega.y - (beta * SEqHatDot.y)) * Time.deltaTime;
+        SEq.z += (SEqDot_omega.z - (beta * SEqHatDot.z)) * Time.deltaTime;
+        SEq.w += (SEqDot_omega.w - (beta * SEqHatDot.w)) * Time.deltaTime;
         // normalise quaternion
         SEq.Normalize();
         // compute flux in the earth frame
@@ -152,18 +152,18 @@ public class PhoneRotation1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Time.deltaTime);
+        //Debug.Log(Time.deltaTime);
         transform.rotation = SEq;
         attitude = Input.gyro.attitude;
-        RotationRate = Input.gyro.rotationRate;
+        RotationRate = Input.gyro.rotationRateUnbiased;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
         filterUpdate(RotationRate, acceleration, heading);
         Debug.Log(SEq);
         //Debug.Log(attitude);
-        //Debug.Log(RotationRate);
-        //Debug.Log(acceleration);
-        //Debug.Log(heading);
+        Debug.Log(RotationRate);
+        Debug.Log(acceleration);
+        Debug.Log(heading);
     }
 
 
