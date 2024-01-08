@@ -13,7 +13,7 @@ public class PizdaRomana : MonoBehaviour
     float deltat = 0.001f; // sampling period in seconds (shown as 1 ms)
     static float gyroMeasError = 3.14159265358979f * (5.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
     float beta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
-// Global system variables
+                                                          // Global system variables
     float a_x, a_y, a_z; // accelerometer measurements
     float w_x, w_y, w_z; // gyroscope measurements in rad/s
     float SEq_1 = 1.0f, SEq_2 = 0.0f, SEq_3 = 0.0f, SEq_4 = 0.0f; // estimated orientation quaternion elements with initial conditions
@@ -34,7 +34,7 @@ public class PizdaRomana : MonoBehaviour
         float twoSEq_2 = 2.0f * SEq_2;
         float twoSEq_3 = 2.0f * SEq_3;
 
-    // Normalise the accelerometer measurement
+        // Normalise the accelerometer measurement
         norm = Mathf.Sqrt(a_x * a_x + a_y * a_y + a_z * a_z);
         a_x /= norm;
         a_y /= norm;

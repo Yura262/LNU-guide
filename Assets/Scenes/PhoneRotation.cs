@@ -11,8 +11,8 @@ public class PhoneRotation : MonoBehaviour
     float zeta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasDrift; // compute zeta
                                                           // Global system variables
 
-    Vector3 w; // accelerometer measurements
-    Vector3 a; // gyroscope measurements in rad/s
+    Vector3 w; // gyroscope measurements
+    Vector3 a; // accelerometer measurements in rad/s
     Vector3 m; // magnetometer measurements
     Quaternion SEq = new Quaternion(1, 0, 0, 0);// estimated orientation quaternion elements with initial conditions
     float b_x = 1, b_z = 0; // reference direction of flux in earth frame
@@ -158,7 +158,7 @@ public class PhoneRotation : MonoBehaviour
         RotationRate = Input.gyro.rotationRate;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
-        SEq = filterUpdate(acceleration, RotationRate, heading);
+        SEq = filterUpdate(RotationRate, acceleration, heading);
         Debug.Log(SEq);
 
     }

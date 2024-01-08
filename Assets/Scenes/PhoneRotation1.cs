@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhoneRotation1 : MonoBehaviour
 {
-    float deltat = 0.001f; // sampling period in seconds (shown as 1 ms)
+    float deltat = 0.02f; // sampling period in seconds (shown as 1 ms)
     static float gyroMeasError = 3.14159265358979f * (5.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
     static float gyroMeasDrift = 3.14159265358979f * (0.2f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
     float beta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
@@ -150,19 +150,20 @@ public class PhoneRotation1 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        Debug.Log(Time.deltaTime);
         transform.rotation = SEq;
         attitude = Input.gyro.attitude;
         RotationRate = Input.gyro.rotationRate;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
-        filterUpdate(acceleration, RotationRate, heading);
+        filterUpdate(RotationRate, acceleration, heading);
         Debug.Log(SEq);
-        Debug.Log(attitude);
-        Debug.Log(RotationRate);
-        Debug.Log(acceleration);
-        Debug.Log(heading);
+        //Debug.Log(attitude);
+        //Debug.Log(RotationRate);
+        //Debug.Log(acceleration);
+        //Debug.Log(heading);
     }
 
 
