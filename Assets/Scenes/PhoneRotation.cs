@@ -22,7 +22,7 @@ public class PhoneRotation : MonoBehaviour
     private void filterUpdate(Vector3 w, Vector3 a, Vector3 m)
     {
         // local system variables
-        float norm; // vector norm
+        //float norm; // vector norm
         Quaternion SEqDot_omega;// quaternion rate from gyroscopes elements
         float f_1, f_2, f_3, f_4, f_5, f_6; // objective function elements
         float J_11or24, J_12or23, J_13or22, J_14or21, J_32, J_33, // objective function Jacobian elements
@@ -139,6 +139,7 @@ public class PhoneRotation : MonoBehaviour
     public Quaternion attitude;
     public Vector3 acceleration;
     public Vector3 heading;
+    public Vector3 RotationRate;
     public Quaternion EstimateOfOrientation_q_est = new Quaternion(1, 0, 0, 0);
     // Start is called before the first frame update
     void Start()
@@ -151,12 +152,13 @@ public class PhoneRotation : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        transform.rotation = SEq;
         attitude = Input.gyro.attitude;
-
+        RotationRate = Input.gyro.rotationRate;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
-
-
+        filterUpdate(acceleration, RotationRate, heading);
+        Debug.Log(SEq);
 
     }
 
