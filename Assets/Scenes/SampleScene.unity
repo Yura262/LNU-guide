@@ -185,6 +185,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8795812198459622360, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 530560363}
+    - targetCorrespondingSourceObject: {fileID: 8795812198459622360, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 530560364}
+    - targetCorrespondingSourceObject: {fileID: 8795812198459622360, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 530560368}
   m_SourcePrefab: {fileID: 100100000, guid: 5f2da0bdc8bcf8a42b0003bdb6ba910e, type: 3}
 --- !u!1 &530560358 stripped
 GameObject:
@@ -215,9 +221,43 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530560358}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb9c29bd7c89f8749a787cba1af727d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attitude: {x: 0, y: 0, z: 0, w: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  heading: {x: 0, y: 0, z: 0}
+  RotationRate: {x: 0, y: 0, z: 0}
+  EstimateOfOrientation_q_est: {x: 1, y: 0, z: 0, w: 0}
+--- !u!114 &530560364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530560358}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8ce7715b5d8be4f9d6cfda3b40f32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attitude: {x: 0, y: 0, z: 0, w: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  heading: {x: 0, y: 0, z: 0}
+  RotationRate: {x: 0, y: 0, z: 0}
+  EstimateOfOrientation_q_est: {x: 1, y: 0, z: 0, w: 0}
+--- !u!114 &530560368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530560358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0effc41416e55429525f4cffb79288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attitude: {x: 0, y: 0, z: 0, w: 0}

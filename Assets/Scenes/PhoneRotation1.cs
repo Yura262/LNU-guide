@@ -167,10 +167,4 @@ public class PhoneRotation1 : MonoBehaviour
     }
 
 
-    // Math library required for ‘Mathf.Sqrt’
-    // System constants
 }
-//Quaternion Orientation = (EstimateOfOrientation_q_est * RotationRate_S_W) * new Quaternion(0.5f, 0.5f, 0.5f, 0.5f);
-//Debug.Log(attitude);
-//Debug.Log(Orientation);
-//Quaternion RotationRate_S_W = new Quaternion(0, Input.gyro.rotationRate.x, Input.gyro.rotationRate.y, Input.gyro.rotationRate.z);

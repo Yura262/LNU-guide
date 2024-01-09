@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PhoneRotation : MonoBehaviour
 {
-    float deltat = 0.001f; // sampling period in seconds (shown as 1 ms)
+    //float Time.deltaTime = 0.001f; // sampling period in seconds (shown as 1 ms)
     static float gyroMeasError = 3.14159265358979f * (5.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
-    static float gyroMeasDrift = 3.14159265358979f * (0.2f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
-    float beta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
+    static float gyroMeasDrift = 3.14159265358979f * (0.02f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
+    float beta = 0.1f;//Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
     float zeta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasDrift; // compute zeta
                                                           // Global system variables
 
@@ -100,9 +101,9 @@ public class PhoneRotation : MonoBehaviour
         w_err.y = twoSEq_1 * SEqHatDot.z + twoSEq_2 * SEqHatDot.w - twoSEq_3 * SEqHatDot.x - twoSEq_4 * SEqHatDot.y;
         w_err.z = twoSEq_1 * SEqHatDot.w - twoSEq_2 * SEqHatDot.z + twoSEq_3 * SEqHatDot.y - twoSEq_4 * SEqHatDot.x;
         // compute and remove the gyroscope baises
-        w_b.x += w_err.x * deltat * zeta;
-        w_b.y += w_err.y * deltat * zeta;
-        w_b.z += w_err.z * deltat * zeta;
+        w_b.x += w_err.x * Time.deltaTime * zeta;
+        w_b.y += w_err.y * Time.deltaTime * zeta;
+        w_b.z += w_err.z * Time.deltaTime * zeta;
         w.x -= w_b.x;
         w.y -= w_b.y;
         w.z -= w_b.z;
@@ -112,10 +113,10 @@ public class PhoneRotation : MonoBehaviour
         SEqDot_omega.z = halfSEq_1 * w.y - halfSEq_2 * w.z + halfSEq_4 * w.x;
         SEqDot_omega.w = halfSEq_1 * w.z + halfSEq_2 * w.y - halfSEq_3 * w.x;
         // compute then integrate the estimated quaternion rate
-        SEq.x += (SEqDot_omega.x - (beta * SEqHatDot.x)) * deltat;
-        SEq.y += (SEqDot_omega.y - (beta * SEqHatDot.y)) * deltat;
-        SEq.z += (SEqDot_omega.z - (beta * SEqHatDot.z)) * deltat;
-        SEq.w += (SEqDot_omega.w - (beta * SEqHatDot.w)) * deltat;
+        SEq.x += (SEqDot_omega.x - (beta * SEqHatDot.x)) * Time.deltaTime;
+        SEq.y += (SEqDot_omega.y - (beta * SEqHatDot.y)) * Time.deltaTime;
+        SEq.z += (SEqDot_omega.z - (beta * SEqHatDot.z)) * Time.deltaTime;
+        SEq.w += (SEqDot_omega.w - (beta * SEqHatDot.w)) * Time.deltaTime;
         // normalise quaternion
         SEq.Normalize();
         // compute flux in the earth frame
@@ -147,20 +148,24 @@ public class PhoneRotation : MonoBehaviour
     {
         Input.gyro.enabled = true;
         Input.compass.enabled = true;
-
+        Debug.Log(beta);
+        Debug.Log(zeta);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
+        InputSystem.EnableDevice(UnityEngine.InputSystem.MagneticFieldSensor.current);
+        InputSystem.EnableDevice(UnityEngine.InputSystem.GravitySensor.current);
         transform.rotation = SEq;
         attitude = Input.gyro.attitude;
-        RotationRate = Input.gyro.rotationRate;
+        RotationRate = Input.gyro.rotationRateUnbiased;
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
         SEq = filterUpdate(RotationRate, acceleration, heading);
         Debug.Log(SEq);
-
+        Debug.Log(Time.deltaTime);
     }
 
 
