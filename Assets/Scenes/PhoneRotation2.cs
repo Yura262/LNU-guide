@@ -134,8 +134,8 @@ public class PhoneRotation2 : MonoBehaviour
     //}
     Quaternion q = new Quaternion(1, 0, 0, 0);
 
-    static float GyroMeasError = Mathf.PI * (10.0f / 180.0f);   // gyroscope measurement error in rads/s (start at 40 deg/s)
-    static float GyroMeasDrift = Mathf.PI * (0.0f / 180.0f);   // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
+    static float GyroMeasError = Mathf.PI * (7.0f / 180.0f);   // gyroscope measurement error in rads/s (start at 40 deg/s)
+    static float GyroMeasDrift = Mathf.PI * (2.0f / 180.0f);   // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
     float beta = Mathf.Sqrt(3.0f / 4.0f) * GyroMeasError;   // compute beta
     float zeta = Mathf.Sqrt(3.0f / 4.0f) * GyroMeasDrift;   // compute zeta, the other free parameter in the Madgwick scheme usually set to a small or zero value
 
