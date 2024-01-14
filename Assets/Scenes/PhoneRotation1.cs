@@ -5,8 +5,8 @@ using UnityEngine;
 public class PhoneRotation1 : MonoBehaviour
 {
     //float Time.deltaTime = 0.02f; // sampling period in seconds (shown as 1 ms)
-    static float gyroMeasError = 3.14159265358979f * (5.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
-    static float gyroMeasDrift = 3.14159265358979f * (0.2f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
+    static float gyroMeasError = 3.14159265358979f * (7.0f / 180.0f); // gyroscope measurement error in rad/s (shown as 5 deg/s)
+    static float gyroMeasDrift = 3.14159265358979f * (2.0f / 180.0f); // gyroscope measurement error in rad/s/s (shown as 0.2f deg/s/s)
     float beta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasError; // compute beta
     float zeta = Mathf.Sqrt(3.0f / 4.0f) * gyroMeasDrift; // compute zeta
                                                           // Global system variables
@@ -159,11 +159,11 @@ public class PhoneRotation1 : MonoBehaviour
         acceleration = Input.acceleration;
         heading = Input.compass.rawVector;
         filterUpdate(RotationRate, acceleration, heading);
-        Debug.Log(SEq);
-        //Debug.Log(attitude);
-        Debug.Log(RotationRate);
-        Debug.Log(acceleration);
-        Debug.Log(heading);
+        //Debug.Log(SEq);
+        ////Debug.Log(attitude);
+        //Debug.Log(RotationRate);
+        //Debug.Log(acceleration);
+        //Debug.Log(heading);
     }
 
 
