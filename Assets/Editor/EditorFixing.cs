@@ -2,15 +2,29 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEditor.Build;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 static class EditorMenus
 {
     // taken from: http://answers.unity3d.com/questions/282959/set-inspector-lock-by-code.html
-    [MenuItem("Tools/Toggle Inspector Lock %l")] // Ctrl + L
+    [MenuItem("Tools/Toggle Inspector Lock %l")] // Ctrl + L to lock inspector window
     static void ToggleInspectorLock()
     {
         ActiveEditorTracker.sharedTracker.isLocked = !ActiveEditorTracker.sharedTracker.isLocked;
         ActiveEditorTracker.sharedTracker.ForceRebuild();
+    }
+
+
+
+    [MenuItem("Edit/Run _F5")] // shortcut key F5 to Play (and exit playmode also)
+    static void PlayGame()
+    {
+        if (!Application.isPlaying)
+        {
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+        }
+        EditorApplication.ExecuteMenuItem("Edit/Play");
     }
 }
 

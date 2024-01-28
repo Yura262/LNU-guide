@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: "Assets/\u0445\u0443\u0439\u043D\u044F/inertial navigation.unity"
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: "Assets/\u0445\u0443\u0439\u043D\u044F/compass.unity"
     guid: d9c712bab9813e54e8063bf7ef0ed823
+  - enabled: 1
+    path: Assets/Scenes/main.unity
+    guid: 112e633e3cafedb498722ffb7df5f858
   m_configObjects: {}
