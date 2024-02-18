@@ -1,0 +1,114 @@
+{
+    "name": "CameraControls",
+    "maps": [
+        {
+            "name": "CameraControl",
+            "id": "06f2969f-ea50-4258-81f8-9639d7af2988",
+            "actions": [
+                {
+                    "name": "Zoom 1 finger",
+                    "type": "Value",
+                    "id": "14f7bd68-c059-4d80-bf97-957a63301b86",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom 2 finger",
+                    "type": "Value",
+                    "id": "361cf4ac-8994-481a-b179-db8524a57320",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom 2 finger press detection",
+                    "type": "Button",
+                    "id": "8db66474-0552-4cc3-92ee-9efcda96840e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pan ",
+                    "type": "Value",
+                    "id": "03fa6837-3f40-4b1b-83dd-dd4262fd4dac",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pan press detection",
+                    "type": "Button",
+                    "id": "9ea698f7-a42e-42a2-9fc8-d8f50151e289",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6c581ff6-09a8-44a9-9329-644568abf531",
+                    "path": "<Touchscreen>/touch0/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom 1 finger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17c09e9b-44f0-422a-8bf1-81cc3cc319d5",
+                    "path": "<Touchscreen>/touch1/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom 2 finger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd852b24-fac1-4959-b8ee-e98546b71567",
+                    "path": "<Touchscreen>/touch1/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom 2 finger press detection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eeeae9d2-8d45-4c70-a27e-8e3ef7e37b5c",
+                    "path": "<Touchscreen>/touch0/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pan ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a9b6b11-c452-47ff-abd0-e392134e0af7",
+                    "path": "<Touchscreen>/touch0/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pan press detection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -14,7 +14,7 @@ public class PhoneRotation2 : MonoBehaviour
         q = ConvertToUnity(q);
         q = Quaternion.Euler(-90, 0, 0) * q;
         Vector3 v = q.eulerAngles;
-        Debug.Log(v);
+        //Debug.Log(v);
 
 
         Vector3 v2 = new Vector3(-(float)v.x, -(float)v.y, (float)v.z);
