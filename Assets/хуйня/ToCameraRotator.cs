@@ -16,4 +16,9 @@ public class ToCameraRotator : MonoBehaviour
     {
         transform.LookAt(mainC.transform.position);
     }
+
+    public void pfakspj()
+    {
+        Debug.Log("Ahjgkfdlfgdsoagfk");
+    }
 }
