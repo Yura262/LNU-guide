@@ -5,18 +5,21 @@ using UnityEngine;
 public class ToCameraRotator : MonoBehaviour
 {
     Camera mainC;
-    // Start is called before the first frame update
+
     void Start()
     {
         mainC = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.LookAt(mainC.transform.position);
+        if (Vector2.Distance((Vector2)transform.position, (Vector2)mainC.transform.position) > 2)
+            transform.LookAt(mainC.transform.position);
     }
-
+    public void PointTo(Vector3 point)
+    {
+        transform.position = point;
+    }
     public void pfakspj()
     {
         Debug.Log("Ahjgkfdlfgdsoagfk");
