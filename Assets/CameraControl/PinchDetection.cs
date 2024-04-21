@@ -59,13 +59,13 @@ public class PinchDetection : MonoBehaviour
         if (VirtualCamera.m_LookAt != null)
             tempFollowObj = VirtualCamera.m_LookAt.gameObject;
         PanCoroutine = StartCoroutine(PanDetection());
-        Debug.Log("dssssssssssss");
+        //Debug.Log("dssssssssssss");
     }
     private void PanEnd()
     {
         //if (VirtualCamera.m_LookAt == null) { VirtualCamera.m_LookAt = tempFollowObj.transform; }
         StopCoroutine(PanCoroutine);
-        Debug.Log("qqqqqqqqqq");
+        //Debug.Log("qqqqqqqqqq");
     }
 
     IEnumerator PanDetection()
@@ -84,7 +84,7 @@ public class PinchDetection : MonoBehaviour
 
             Vector2 direction = prevScreenPos - CurrScreenPOs;
             direction = direction * Time.deltaTime;
-            Debug.Log(direction);
+            //Debug.Log(direction);
             VirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset += new Vector3(direction.x, 0, direction.y);
             prevScreenPos = CurrScreenPOs;
             yield return new WaitForEndOfFrame();

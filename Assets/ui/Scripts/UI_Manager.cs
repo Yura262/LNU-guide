@@ -35,19 +35,27 @@ public class UI_Manager : MonoBehaviour
 
     public void SearchFieldChanged(string text)
     {
+        for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
+            Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
+
         Debug.Log(text);
 
-        var res = SearchC.Search(text);
-        if (res.Count == 1)
+        var res = new Dictionary<int, string> { { 1, "1" }, { 123, "123" } };// SearchC.Search(text);
+        if (res.Count == 0)
         {
             //show nothing text
         }
-
         foreach (var entry in res)
         {
             GameObject element = Instantiate(SearchEntryElement, SearchPanelScrollView.transform);
             element.GetComponentInChildren<TextMeshProUGUI>().text = entry.Value;
-            element.GetComponentInChildren<Button>().onClick.AddListener(delegate { NavManager.instance.StartNavigation(entry.Key); });
+            element.GetComponentInChildren<Button>().onClick.AddListener(delegate
+            {
+                NavManager.instance.StartNavigation(entry.Key);
+                for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
+                    Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
+            }
+            );
         }
 
 

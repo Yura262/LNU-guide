@@ -21,4 +21,8 @@ public class Auditory : MonoBehaviour//, PlaceLocation
     {
 
     }
+    public override string ToString()
+    {
+        return navID.ToString() + " " + Name + " " + Position.ToString();
+    }
 }

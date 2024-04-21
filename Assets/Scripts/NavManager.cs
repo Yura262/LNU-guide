@@ -22,14 +22,17 @@ public class NavManager : MonoBehaviour
     }
     List<Auditory> auditories;//existing on map
     public NavMeshAgent agent;
-    float totalDistance;
-    float remainingDistance;
-    float DistanceToNextStop;
+    //float totalDistance;
+    float remainingDistance_;
+    float DistanceToNextStop = 0;
     public ToCameraRotator NavPanelUI;
+    public LineRenderer NavLineRenderer;
     void Start()
     {
 
-        auditories = GetComponents<Auditory>().ToList();
+        auditories = FindObjectsOfType<Auditory>().ToList();
+        foreach (var a in auditories)
+            Debug.Log(a);
         ISearchRequirements Stwwdas;
         if (TryGetComponent<ISearchRequirements>(out Stwwdas))
         {
@@ -43,14 +46,29 @@ public class NavManager : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(agent.remainingDistance);
-        if (agent.gameObject.activeInHierarchy)
+        Debug.Log(agent.path.corners.Count());
+        if (agent.hasPath)
         {
-            //some step detection can go here
-            if (remainingDistance <= DistanceToNextStop)
+            if (agent.path.corners.Length > 2)
             {
-                remainingDistance = agent.remainingDistance;
-                DistanceToNextStop = remainingDistance / 5;/////
+                NavLineRenderer.positionCount = agent.path.corners.Length;
+
+                for (var i = 0; i < agent.path.corners.Length; i++)
+                {
+
+                    NavLineRenderer.SetPosition(i, agent.path.corners[i]);
+                }
+            }
+
+            //some step detection can go here
+            Debug.Log(RemainingDistance(agent.path.corners));
+            //Debug.Log(remainingDistance_);
+            //Debug.Log(DistanceToNextStop);
+            if (RemainingDistance(agent.path.corners) <= remainingDistance_ - DistanceToNextStop)
+            {
+                agent.isStopped = true;
+                remainingDistance_ = RemainingDistance(agent.path.corners);
+                //DistanceToNextStop = remainingDistance / 5;/////
                 movePanel(DistanceToNextStop);
             }
         }
@@ -59,21 +77,25 @@ public class NavManager : MonoBehaviour
     }
     public void PanelClickNext()
     {
-        remainingDistance = DistanceToNextStop;
+        agent.isStopped = false;
+        //StartCoroutine(moveForSomeDistance(DistanceToNextStop));
+        //remainingDistance = DistanceToNextStop + RemainingDistance(agent.path.corners);
     }
     void movePanel(float distanceToNextStop)
     {
         Vector3 previousCorner = agent.path.corners[0];
         float lengthSoFar = 0.0F;
-        int i = 1;
+        int i = 0;
         Vector3 NextStopPosition = agent.path.corners[0];
         while (i < agent.path.corners.Length)
         {
-            Vector3 currentCorner = agent.path.corners[i];
-            lengthSoFar += Vector3.Distance(previousCorner, currentCorner);
-            previousCorner = currentCorner;
-            i++;
+            Debug.Log(i);
+            Debug.Log(agent.path.corners.Length);
+            Debug.Log(agent.path.corners.Count());
             NextStopPosition = agent.path.corners[i];
+            lengthSoFar += Vector3.Distance(previousCorner, NextStopPosition);
+            previousCorner = NextStopPosition;
+            i++;
             if (lengthSoFar >= distanceToNextStop)
                 break;
         }
@@ -81,6 +103,8 @@ public class NavManager : MonoBehaviour
     }
     public void StartNavigation(int navId)
     {
+        foreach (var a in auditories)
+            Debug.Log(a);
         Auditory auditoryToGo = auditories.Find(x => x.navID == navId);
         if (auditoryToGo == null)
         {
@@ -88,11 +112,38 @@ public class NavManager : MonoBehaviour
             return;
         }
         agent.SetDestination(auditoryToGo.Position);
-        totalDistance = agent.remainingDistance;
-        remainingDistance = agent.remainingDistance;
-        DistanceToNextStop = remainingDistance - DistanceToNextStop;
+        if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
+            Debug.LogError("noPath");
+        agent.isStopped = true;
+        //totalDistance = RemainingDistance(agent.path.corners);
+        Debug.Log(remainingDistance_);
+        Debug.Log(RemainingDistance(agent.path.corners));
+        remainingDistance_ = RemainingDistance(agent.path.corners);
+        Debug.Log(remainingDistance_);
+        DistanceToNextStop = remainingDistance_ / 5;
+        movePanel(DistanceToNextStop);
+
+
+    }
+    IEnumerator moveForSomeDistance(float distance)
+    {
+        float startRemD = remainingDistance_;
+        agent.isStopped = false;
+        while (RemainingDistance(agent.path.corners) > startRemD - distance)
+            yield return null;
+        agent.isStopped = true;
+    }
+    public float RemainingDistance(Vector3[] points)
+    {
+        if (points.Length < 2) return 0;
+        float distance = 0;
+        for (int i = 0; i < points.Length - 1; i++)
+            distance += Vector3.Distance(points[i], points[i + 1]);
+        ////Debug.Log("dist" + distance.ToString());
+        return distance;
     }
 }
+
 public interface ISearchRequirements
 {
     //Dictionary<int, string> auditoriesInDB 
