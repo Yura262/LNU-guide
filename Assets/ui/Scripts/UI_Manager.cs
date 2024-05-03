@@ -40,7 +40,7 @@ public class UI_Manager : MonoBehaviour
 
         Debug.Log(text);
 
-        var res = new Dictionary<int, string> { { 1, "1" }, { 123, "123" } };// SearchC.Search(text);
+        var res = SearchC.Search(text);//new Dictionary<int, string> { { 1, "1" }, { 123, "123" } };
         if (res.Count == 0)
         {
             //show nothing text
@@ -48,7 +48,7 @@ public class UI_Manager : MonoBehaviour
         foreach (var entry in res)
         {
             GameObject element = Instantiate(SearchEntryElement, SearchPanelScrollView.transform);
-            element.GetComponentInChildren<TextMeshProUGUI>().text = entry.Value;
+            element.GetComponentInChildren<TextMeshProUGUI>().text = entry.Value.ToString();
             element.GetComponentInChildren<Button>().onClick.AddListener(delegate
             {
                 NavManager.instance.StartNavigation(entry.Key);

@@ -40,10 +40,10 @@ public class NavManager : MonoBehaviour
         if (TryGetComponent<ISearchRequirements>(out Stwwdas))
         {
             ISearchRequirements SearchC = GetComponent<ISearchRequirements>();
-            SearchC.FilterNotImplementedAuditories(auditories);
+            SearchC.FilterNotImplementedAuditories(auditories.Select(c => c.navID).ToList());
 
             foreach (var val in auditories)
-                val.Name = SearchC.GetName(val.navID);
+                val.auditoryStruct = SearchC.Get(val.navID);
         }
     }
 
@@ -64,9 +64,9 @@ public class NavManager : MonoBehaviour
             }
 
             //some step detection can go here
-            Debug.Log(RemainingDistance(agent.path.corners));
-            Debug.Log(remainingDistance_);
-            Debug.Log(DistanceToNextStop);
+            //Debug.Log(RemainingDistance(agent.path.corners));
+            //Debug.Log(remainingDistance_);
+            //Debug.Log(DistanceToNextStop);
             if (RemainingDistance(agent.path.corners) <= remainingDistance_ - DistanceToNextStop)
             {
                 agent.isStopped = true;
@@ -76,10 +76,10 @@ public class NavManager : MonoBehaviour
             }
             if (remainingDistance_ == 0 && auditoryToGo != null)
             {
-                Debug.Log(remainingDistance_);
-                Debug.Log(RemainingDistance(agent.path.corners));
+                //Debug.Log(remainingDistance_);
+                //Debug.Log(RemainingDistance(agent.path.corners));
                 remainingDistance_ = RemainingDistance(agent.path.corners);
-                Debug.Log(remainingDistance_);
+                //Debug.Log(remainingDistance_);
                 DistanceToNextStop = remainingDistance_ / 5;
                 movePanel(DistanceToNextStop);
             }
@@ -143,15 +143,15 @@ public class NavManager : MonoBehaviour
         //}
         agent.isStopped = true;
         //totalDistance = RemainingDistance(agent.path.corners);
-        Debug.Log("fsfas");
+        //Debug.Log("fsfas");
 
 
 
     }
-    IEnumerator waitForPath()
-    {
-        yield return new WaitUntil(() => agent.pathPending == false);
-    }
+    //IEnumerator waitForPath()
+    //{
+    //    yield return new WaitUntil(() => agent.pathPending == false);
+    //}
     IEnumerator moveForSomeDistance(float distance)
     {
         float startRemD = remainingDistance_;
@@ -170,22 +170,27 @@ public class NavManager : MonoBehaviour
         return distance;
     }
 }
+public interface IAuditoryStructRequirements
+{
+    int navID { get; set; }
+    string Name { get; set; }//аудиторія імені Банаха
+    string Number { get; set; }//123a
+    string ToString(); //return "123f, аудиторія імені Банаха"
 
+}
 public interface ISearchRequirements
 {
-    //Dictionary<int, string> auditoriesInDB 
+    Dictionary<int, IAuditoryStructRequirements> Search(string request);//int - navId; request - user input; returns auditories sorted by probability of suiting a request
 
-    Dictionary<int, string> Search(string request);//int - navId, string - Name; request - user input; returns auditories sorted by probability of suiting a request
-
-    Dictionary<int, string> GetList();//returns a list of all auditories
-
-    string GetName(int navId);//get аудиторія імені Банаха
-    string GetNumber(int navId);//get 123a
-    void FilterNotImplementedAuditories(List<Auditory> auditories)
+    Dictionary<int, IAuditoryStructRequirements> GetList();//returns a list of all auditories
+    IAuditoryStructRequirements Get(int navId);//mainly for initializing many auditories on start of execution (maybe pass a sorted list? )
+    //string GetName(int navId);//get аудиторія імені Банаха
+    //string GetNumber(int navId);//get 123a
+    void FilterNotImplementedAuditories(List<int> auditories)//list of navIDs that are on map
     {
 
         //removes elements that are not in auditories list (not implemented on map)
-        //auditoriesInDB = auditoriesInDB.Where(p => GetComponents<Auditory>().ToList().Select(a => a.navID).Contains(p.Key));
+        //auditoriesInDB = auditoriesInDB.Where(p => auditories.Contains(p.Key));
     }
 
 }
