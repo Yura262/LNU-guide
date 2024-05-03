@@ -18,7 +18,7 @@ public class ToCameraRotator : MonoBehaviour
     }
     public void PointTo(Vector3 point)
     {
-        transform.position = point + new Vector3(0, 5, 0);
+        transform.position = point + new Vector3(0, 10, 0);
     }
     public void pfakspj()
     {

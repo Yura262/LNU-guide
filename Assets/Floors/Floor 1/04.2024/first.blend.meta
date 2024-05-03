@@ -3,12 +3,43 @@ guid: c87412be6472bb84e803ff9628cb1c73
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 1f
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 2prkl
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: aaaaaaaaaa
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: first.f
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: full2prkl
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "\u0423\u043D\u0456\u0432\u0435\u0440\u0441\u0438\u0442\u0435\u0442\u0441\u044C\u043A\u0430_1_02
+        - 0001 Panorama"
+    second: {fileID: 2100000, guid: a6150f358f0955f49ac440bf33804804, type: 2}
   materials:
     materialImportMode: 2
-    materialName: 0
-    materialSearch: 1
-    materialLocation: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

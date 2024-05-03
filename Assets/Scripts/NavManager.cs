@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -27,9 +28,11 @@ public class NavManager : MonoBehaviour
     float DistanceToNextStop = 0;
     public ToCameraRotator NavPanelUI;
     public LineRenderer NavLineRenderer;
+    Vector3 prevposition;
+    Auditory auditoryToGo;
     void Start()
     {
-
+        prevposition = transform.position;
         auditories = FindObjectsOfType<Auditory>().ToList();
         foreach (var a in auditories)
             Debug.Log(a);
@@ -46,7 +49,7 @@ public class NavManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(agent.path.corners.Count());
+        //Debug.Log(agent.path.corners.Count());
         if (agent.hasPath)
         {
             if (agent.path.corners.Length > 2)
@@ -62,8 +65,8 @@ public class NavManager : MonoBehaviour
 
             //some step detection can go here
             Debug.Log(RemainingDistance(agent.path.corners));
-            //Debug.Log(remainingDistance_);
-            //Debug.Log(DistanceToNextStop);
+            Debug.Log(remainingDistance_);
+            Debug.Log(DistanceToNextStop);
             if (RemainingDistance(agent.path.corners) <= remainingDistance_ - DistanceToNextStop)
             {
                 agent.isStopped = true;
@@ -71,6 +74,24 @@ public class NavManager : MonoBehaviour
                 //DistanceToNextStop = remainingDistance / 5;/////
                 movePanel(DistanceToNextStop);
             }
+            if (remainingDistance_ == 0 && auditoryToGo != null)
+            {
+                Debug.Log(remainingDistance_);
+                Debug.Log(RemainingDistance(agent.path.corners));
+                remainingDistance_ = RemainingDistance(agent.path.corners);
+                Debug.Log(remainingDistance_);
+                DistanceToNextStop = remainingDistance_ / 5;
+                movePanel(DistanceToNextStop);
+            }
+        }
+        else
+        {
+        }
+        if (transform.position != prevposition)
+        {
+            prevposition = transform.position;
+            if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
+                Debug.Log("noPath");
         }
 
 
@@ -99,31 +120,37 @@ public class NavManager : MonoBehaviour
             if (lengthSoFar >= distanceToNextStop)
                 break;
         }
+        remainingDistance_ = RemainingDistance(agent.path.corners);
         NavPanelUI.PointTo(NextStopPosition);
     }
     public void StartNavigation(int navId)
     {
+        Debug.Log("navid" + navId.ToString());
         foreach (var a in auditories)
             Debug.Log(a);
-        Auditory auditoryToGo = auditories.Find(x => x.navID == navId);
+        auditoryToGo = auditories.Find(x => x.navID == navId);
         if (auditoryToGo == null)
         {
-            Debug.LogError("Auditory not implemented");
+            Debug.Log("Auditory not implemented");
             return;
         }
         agent.SetDestination(auditoryToGo.Position);
         if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
-            Debug.LogError("noPath");
+            Debug.Log("noPath");
+        //while (agent.pathPending)
+        //{
+        //staswaitForPath
+        //}
         agent.isStopped = true;
         //totalDistance = RemainingDistance(agent.path.corners);
-        Debug.Log(remainingDistance_);
-        Debug.Log(RemainingDistance(agent.path.corners));
-        remainingDistance_ = RemainingDistance(agent.path.corners);
-        Debug.Log(remainingDistance_);
-        DistanceToNextStop = remainingDistance_ / 5;
-        movePanel(DistanceToNextStop);
+        Debug.Log("fsfas");
 
 
+
+    }
+    IEnumerator waitForPath()
+    {
+        yield return new WaitUntil(() => agent.pathPending == false);
     }
     IEnumerator moveForSomeDistance(float distance)
     {
@@ -152,11 +179,12 @@ public interface ISearchRequirements
 
     Dictionary<int, string> GetList();//returns a list of all auditories
 
-    string GetName(int navId);//self explanatory (див матан)
-
+    string GetName(int navId);//get аудиторія імені Банаха
+    string GetNumber(int navId);//get 123a
     void FilterNotImplementedAuditories(List<Auditory> auditories)
     {
-        //removes elements that are not in auditories list
+
+        //removes elements that are not in auditories list (not implemented on map)
         //auditoriesInDB = auditoriesInDB.Where(p => GetComponents<Auditory>().ToList().Select(a => a.navID).Contains(p.Key));
     }
 
