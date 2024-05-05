@@ -11,26 +11,7 @@ public class pickedBodyController : MonoBehaviour
 
 
     public enum SelectedPanel { Folded, NavigationPanel, SettingsPanel, StartPanel }
-    //private SelectedPanel _selectedPanel;
     public SelectedPanel selectedPanel;
-    //{
-    //    get { return _selectedPanel; }
-    //    set
-    //    {
-
-
-
-    //        _selectedPanel = value;
-
-    //    }
-
-    //}
-
-
-    void Start()
-    {
-
-    }
 
     private void DisableAllButtons()
     {
@@ -57,10 +38,5 @@ public class pickedBodyController : MonoBehaviour
         StartPanel.SetActive(true);
         selectedPanel = SelectedPanel.StartPanel;
     }
-
-
-
-
-
 
 }

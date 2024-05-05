@@ -12,9 +12,7 @@ public class UI_Manager : MonoBehaviour
     public LanguageSwitch languageSwitch;
     public pickedBodyController pickedBodyController;
 
-
     public static UI_Manager instance { get; private set; }
-    ISearchRequirements SearchC;
 
     [SerializeField]
     GameObject SearchPanelScrollView;
@@ -22,15 +20,10 @@ public class UI_Manager : MonoBehaviour
     GameObject SearchEntryElement;
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
+        if (instance != null && instance != this)
+            Destroy(this);
         else
-        {
-            Destroy(gameObject);
-        }
-        //DontDestroyOnLoad(gameObject);
+            instance = this;
     }
 
     public void SearchFieldChanged(string text)
@@ -38,20 +31,19 @@ public class UI_Manager : MonoBehaviour
         for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
             Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
 
-        Debug.Log(text);
-
-        var res = SearchC.Search(text);//new Dictionary<int, string> { { 1, "1" }, { 123, "123" } };
+        var res = AuditorySearch.instance.Search(text);//new Dictionary<int, string> { { 1, "1" }, { 123, "123" } };
         if (res.Count == 0)
         {
             //show nothing text
+            Debug.Log("Nothing found");
         }
         foreach (var entry in res)
         {
             GameObject element = Instantiate(SearchEntryElement, SearchPanelScrollView.transform);
-            element.GetComponentInChildren<TextMeshProUGUI>().text = entry.Value.ToString();
+            element.GetComponentInChildren<TextMeshProUGUI>().text = entry.ToString();
             element.GetComponentInChildren<Button>().onClick.AddListener(delegate
             {
-                NavManager.instance.StartNavigation(entry.Key);
+                startNav(entry.navID);
                 for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
                     Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
             }
@@ -63,18 +55,29 @@ public class UI_Manager : MonoBehaviour
 
     public void SearchFieldEntered(string text)
     {
-        var res = SearchC.Search(text);
+        var res = AuditorySearch.instance.Search(text);
         if (res.Count == 1)
         {
-            NavManager.instance.StartNavigation(res.Keys.ToList()[0]);
+            startNav(res[0].navID);
         }
     }
-    void Start()
+
+    void startNav(int id)
     {
-        SearchC = GetComponent<ISearchRequirements>();
+        if (NavManager.instance.Navigating)
+        {
+            NavManager.instance.StartNavigation(id);
+            //fold some ui panels etc
+        }
+        else
+        {
+            Debug.Log("Ми вже навігуємся, скасувати?");
+        }
     }
-
-
+    public void StopNavigation()
+    {
+        //fold some panels 
+    }
     void Update()
     {
 

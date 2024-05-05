@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -13,43 +9,43 @@ using UnityEngine.UIElements;
 
 public class NavManager : MonoBehaviour
 {
+    public bool Navigating { get; private set; }
     public static NavManager instance { get; private set; }
     void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (instance != null && instance != this)
+            Destroy(this);
         else
-            Destroy(gameObject);
+            instance = this;
+
+        gameObject.AddComponent<AuditorySearch>();
     }
     List<Auditory> auditories;//existing on map
     public NavMeshAgent agent;
-    //float totalDistance;
     float remainingDistance_;
     float DistanceToNextStop = 0;
     public ToCameraRotator NavPanelUI;
     public LineRenderer NavLineRenderer;
     Vector3 prevposition;
     Auditory auditoryToGo;
+    Vector3? startPosition;
     void Start()
     {
+
         prevposition = transform.position;
         auditories = FindObjectsOfType<Auditory>().ToList();
         foreach (var a in auditories)
             Debug.Log(a);
-        ISearchRequirements Stwwdas;
-        if (TryGetComponent<ISearchRequirements>(out Stwwdas))
-        {
-            ISearchRequirements SearchC = GetComponent<ISearchRequirements>();
-            SearchC.FilterNotImplementedAuditories(auditories.Select(c => c.navID).ToList());
 
-            foreach (var val in auditories)
-                val.auditoryStruct = SearchC.Get(val.navID);
-        }
+        AuditorySearch.instance.FilterNotImplementedAuditories(auditories.Select(c => c.navID).ToList());
+
+        foreach (var val in auditories)
+            val.auditoryStruct = AuditorySearch.instance.Get(val.navID);
+
     }
 
     void Update()
     {
-        //Debug.Log(agent.path.corners.Count());
         if (agent.hasPath)
         {
             if (agent.path.corners.Length > 2)
@@ -59,27 +55,25 @@ public class NavManager : MonoBehaviour
                 for (var i = 0; i < agent.path.corners.Length; i++)
                 {
 
-                    NavLineRenderer.SetPosition(i, agent.path.corners[i]);
+                    NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f);
                 }
             }
 
-            //some step detection can go here
-            //Debug.Log(RemainingDistance(agent.path.corners));
-            //Debug.Log(remainingDistance_);
-            //Debug.Log(DistanceToNextStop);
             if (RemainingDistance(agent.path.corners) <= remainingDistance_ - DistanceToNextStop)
             {
                 agent.isStopped = true;
                 remainingDistance_ = RemainingDistance(agent.path.corners);
-                //DistanceToNextStop = remainingDistance / 5;/////
+                if (remainingDistance_ < 0.5f)
+                {
+                    //stop navigation
+                    Stop();
+                }
                 movePanel(DistanceToNextStop);
+
             }
             if (remainingDistance_ == 0 && auditoryToGo != null)
             {
-                //Debug.Log(remainingDistance_);
-                //Debug.Log(RemainingDistance(agent.path.corners));
                 remainingDistance_ = RemainingDistance(agent.path.corners);
-                //Debug.Log(remainingDistance_);
                 DistanceToNextStop = remainingDistance_ / 5;
                 movePanel(DistanceToNextStop);
             }
@@ -125,6 +119,7 @@ public class NavManager : MonoBehaviour
     }
     public void StartNavigation(int navId)
     {
+        startPosition = agent.gameObject.transform.position;
         Debug.Log("navid" + navId.ToString());
         foreach (var a in auditories)
             Debug.Log(a);
@@ -137,29 +132,10 @@ public class NavManager : MonoBehaviour
         agent.SetDestination(auditoryToGo.Position);
         if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
             Debug.Log("noPath");
-        //while (agent.pathPending)
-        //{
-        //staswaitForPath
-        //}
         agent.isStopped = true;
-        //totalDistance = RemainingDistance(agent.path.corners);
-        //Debug.Log("fsfas");
-
-
-
+        Navigating = true;
     }
-    //IEnumerator waitForPath()
-    //{
-    //    yield return new WaitUntil(() => agent.pathPending == false);
-    //}
-    IEnumerator moveForSomeDistance(float distance)
-    {
-        float startRemD = remainingDistance_;
-        agent.isStopped = false;
-        while (RemainingDistance(agent.path.corners) > startRemD - distance)
-            yield return null;
-        agent.isStopped = true;
-    }
+
     public float RemainingDistance(Vector3[] points)
     {
         if (points.Length < 2) return 0;
@@ -169,28 +145,15 @@ public class NavManager : MonoBehaviour
         ////Debug.Log("dist" + distance.ToString());
         return distance;
     }
-}
-public interface IAuditoryStructRequirements
-{
-    int navID { get; set; }
-    string Name { get; set; }//аудиторія імені Банаха
-    string Number { get; set; }//123a
-    string ToString(); //return "123f, аудиторія імені Банаха"
-
-}
-public interface ISearchRequirements
-{
-    Dictionary<int, IAuditoryStructRequirements> Search(string request);//int - navId; request - user input; returns auditories sorted by probability of suiting a request
-
-    Dictionary<int, IAuditoryStructRequirements> GetList();//returns a list of all auditories
-    IAuditoryStructRequirements Get(int navId);//mainly for initializing many auditories on start of execution (maybe pass a sorted list? )
-    //string GetName(int navId);//get аудиторія імені Банаха
-    //string GetNumber(int navId);//get 123a
-    void FilterNotImplementedAuditories(List<int> auditories)//list of navIDs that are on map
+    public void Stop()
     {
+        startPosition = null;
+        auditoryToGo = null;
+        agent.isStopped = true;
+        agent.ResetPath();
+        Navigating = false;
+        UI_Manager.instance.StopNavigation();
 
-        //removes elements that are not in auditories list (not implemented on map)
-        //auditoriesInDB = auditoriesInDB.Where(p => auditories.Contains(p.Key));
+        //play ad :)
     }
-
 }

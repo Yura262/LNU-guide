@@ -6,27 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(NavMeshModifierVolume))]
 public class Auditory : MonoBehaviour//, PlaceLocation
 {
-
     public Vector3 Position;
-    //public string Name;
     public int navID;
-    private IAuditoryStructRequirements privateStruct;
-    public IAuditoryStructRequirements auditoryStruct
-    {
-        get
-        {
-            return privateStruct;
-        }
-        set
-        {
-            if (value.navID != navID)
-            {
-                throw new Exception("],fyf [eqyz yt ghfw.'");
-            }
-            privateStruct = value;
-            privateStruct.navID = navID;
-        }
-    }
+    public RomanAuiditoryStruct auditoryStruct;
+
 
     private NavMeshModifierVolume NMVolume;
     void Start()
