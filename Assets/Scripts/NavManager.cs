@@ -31,7 +31,7 @@ public class NavManager : MonoBehaviour
     Vector3? startPosition;
     void Start()
     {
-
+        Navigating = false;
         prevposition = transform.position;
         auditories = FindObjectsOfType<Auditory>().ToList();
         foreach (var a in auditories)

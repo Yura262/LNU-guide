@@ -64,7 +64,7 @@ public class UI_Manager : MonoBehaviour
 
     void startNav(int id)
     {
-        if (NavManager.instance.Navigating)
+        if (!NavManager.instance.Navigating)
         {
             NavManager.instance.StartNavigation(id);
             //fold some ui panels etc
