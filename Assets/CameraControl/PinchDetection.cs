@@ -24,7 +24,7 @@ public class PinchDetection : MonoBehaviour
     float zoomLevel = 1;//value 1 to 2
     float tiltLevel = 0;
 
-    Vector3 touchstart;
+    Vector2 touchstart;
     Vector2 touch1Start;
     Vector2 touch2Start;
     Vector2 touch1Prev;
@@ -35,6 +35,10 @@ public class PinchDetection : MonoBehaviour
     bool zoomRotateMode;
     bool tiltMode;
     bool modeSelected;
+
+    Vector2 prevFingerLineForAngle;
+    float prevAngle;
+    Vector3 currAngleVector;
     private void Awake()
     {
         controls = new CameraControls();
@@ -49,6 +53,7 @@ public class PinchDetection : MonoBehaviour
     }
     private void Start()
     {
+        //ResetCamera();
         Composer = VirtualCamera.GetCinemachineComponent<CinemachineComposer>();
         Transposer = VirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         zoomLevel = Mathf.InverseLerp(80, 125, VirtualCamera.m_Lens.FieldOfView) + 1;
@@ -62,39 +67,66 @@ public class PinchDetection : MonoBehaviour
             StartTouchDistanceZoom = Vector2.Distance(touch1Start, touch2Start);
             TouchDistanceBetweenFingersZoom = StartTouchDistanceZoom;
             modeSelected = false;
+            //touchstart = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
         };
         controls.CameraControl.Zoom2fingerpressdetection.canceled += _ =>
         {
+            //zoom false?
             zoom = false;
             zoomRotateMode = false;
             tiltMode = false;
             modeSelected = false;
         };
-        controls.CameraControl.Panpressdetection.started += _ => { pan = true; touchstart = Input.mousePosition; };
-        controls.CameraControl.Panpressdetection.canceled += _ => pan = false;
-        controls.CameraControl.Zoom2fingerpressdetection.started += _ => { pan = false; };
-
+        controls.CameraControl.Panpressdetection.started += _ => { pan = true; touchstart = controls.CameraControl.Pan.ReadValue<Vector2>(); };
+        controls.CameraControl.Panpressdetection.canceled += _ =>
+        {
+            pan = false;
+            zoom = false;
+            zoomRotateMode = false;
+            tiltMode = false;
+            modeSelected = false;
+        };
+        controls.CameraControl.Zoom2fingerpressdetection.started += _ => {/* pan = false;*/ };
     }
-
+    private void ResetCamera()
+    {
+        FollowObj.transform.eulerAngles = Vector3.zero;
+        VirtualCamera.m_Lens.FieldOfView = 100;
+        FollowObj.transform.position = Vector3.zero;
+    }
     private void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            pan = true;
-            touchstart = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-            pan = false;
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    pan = true;
+        //    touchstart = controls.CameraControl.Pan.ReadValue<Vector2>();
+        //}
+        //if (Input.GetMouseButtonUp(0))
+        //    pan = false;
 
         if (pan)
         {
-            if (!zoom)
+            if (!tiltMode)
             {
-                Vector3 direction = touchstart - Input.mousePosition;
-                touchstart = Input.mousePosition;
+                //if (!zoom)
+                //{
+
+                Vector3 direction = touchstart - controls.CameraControl.Pan.ReadValue<Vector2>(); ;
+                touchstart = controls.CameraControl.Pan.ReadValue<Vector2>();
                 direction = direction * Time.deltaTime * zoomLevel;
-                FollowObj.transform.position += new Vector3(-direction.y, 0, direction.x);
+                Vector3 moveDir = FollowObj.transform.forward * direction.y + transform.right * direction.x;
+                FollowObj.transform.position += moveDir;// new Vector3(-direction.y, 0, direction.x);
+                //}
+                //if (zoomRotateMode)
+                //{
+                //    Vector2 currPos = (touch1Start + controls.CameraControl.Zoom1finger.ReadValue<Vector2>()) / 2;
+                //    Vector3 direction = touch1Start - controls.CameraControl.Zoom1finger.ReadValue<Vector2>();
+                //    touch1Start = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                //    direction = direction * Time.deltaTime * zoomLevel;
+                //    FollowObj.transform.position += new Vector3(-direction.y, 0, direction.x);
+                //}
+
             }
         }
 
@@ -105,50 +137,84 @@ public class PinchDetection : MonoBehaviour
             touch1Start = Vector2.zero;
             touch2Start = Input.mousePosition;
         }
+        if (Input.GetMouseButton(2))
+            pan = false;
         if (Input.GetMouseButtonUp(2))
             zoom = false;
         if (zoom && !modeSelected)
         {
             float distBetweenFingers = Vector2.Distance(controls.CameraControl.Zoom1finger.ReadValue<Vector2>(), controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            if (Mathf.Abs(StartTouchDistanceZoom - distBetweenFingers) < 0.75f)//eps
+            if (Mathf.Abs(StartTouchDistanceZoom - distBetweenFingers) > 1.75f)//eps
             {
                 zoomRotateMode = true;
                 modeSelected = true;
+                touch2Start = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                prevFingerLineForAngle = controls.CameraControl.Zoom1finger.ReadValue<Vector2>() - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                prevAngle = 0;
             }
             else
             {
                 float d1 = Vector2.Distance(touch1Start, controls.CameraControl.Zoom1finger.ReadValue<Vector2>());
+                Vector2 travel1 = touch1Start - controls.CameraControl.Zoom1finger.ReadValue<Vector2>();
                 float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-                if (Mathf.Abs(d1 - d2) > 0.1f /*&& Mathf.Abs(d1) > 0.2f*/)//eps
+                Vector2 travel2 = touch2Start - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                float angle = Vector2.Angle(travel1, travel2);
+                float generalAngle = Vector2.Angle(travel1 + travel2, Vector2.up);
+                if (angle < 8 && generalAngle < 8 && Mathf.Abs(d1) > 0.5f)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
+                    touch1Start = new Vector2(touch1Start.x, 0);
                 }
             }
         }
         if (zoomRotateMode)
         {
-            pan = false;//removebeforerelease + check
-            float distBetweenFingers = Vector2.Distance(controls.CameraControl.Zoom1finger.ReadValue<Vector2>(), controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+            //pan = false;//removebeforerelease + check
+            Vector2 LineBetweenFingers = controls.CameraControl.Zoom1finger.ReadValue<Vector2>() - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+            float distBetweenFingers = LineBetweenFingers.magnitude;
             float difference = distBetweenFingers - TouchDistanceBetweenFingersZoom;
             TouchDistanceBetweenFingersZoom = distBetweenFingers;
-            zoomLevel -= difference * Time.deltaTime * 0.5f;
+            //touch2Prev = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+            zoomLevel -= difference * Time.deltaTime * 0.2f;
 
             zoomLevel = Mathf.Clamp(zoomLevel, 1, 2);
             VirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(80, 125, zoomLevel - 1);
-            Composer.m_TrackedObjectOffset.y = Mathf.Lerp(-0.5f, -10f, zoomLevel - 1);
+            //Composer.m_TrackedObjectOffset.y = Mathf.Lerp(-0.5f, -10f, zoomLevel - 1);
+            //rotation
+
+            // get angular difference
+            float angleNow = Mathf.Atan2(LineBetweenFingers.y, LineBetweenFingers.x) * Mathf.Rad2Deg;
+            float angleThen = Mathf.Atan2(prevFingerLineForAngle.y, prevFingerLineForAngle.x) * Mathf.Rad2Deg;
+            // wraparound failsafes (wraparound of Mathf.Atan2 is at +-180)
+            if (angleNow > 90 && angleThen < -90)
+                angleNow -= 360;
+            if (angleNow < -90 && angleThen > 90)
+                angleNow += 360;
+            float angularDiff = angleNow - angleThen;
+            float currAngle = Vector2.SignedAngle(LineBetweenFingers, prevFingerLineForAngle);
+            Debug.Log(currAngle);
+            float differenceAngle = angularDiff;// (prevAngle - currAngle) * Time.deltaTime * 100;
+            Debug.Log(differenceAngle);
+            prevAngle = currAngle;
+            prevFingerLineForAngle = LineBetweenFingers;
+
+
+            FollowObj.transform.eulerAngles += new Vector3(0, differenceAngle, 0);
+
         }
         if (tiltMode)
         {
             float d1 = Vector2.Distance(touch1Start, controls.CameraControl.Zoom1finger.ReadValue<Vector2>());
-            touch1Prev = controls.CameraControl.Zoom1finger.ReadValue<Vector2>();
-            //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            tiltLevel -= (d1 - TiltDistancePrev) * Time.deltaTime * 0.2f;
-
-            tiltLevel = Mathf.Clamp(Mathf.Abs(tiltLevel), 0, 1);
-            Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.01f, tiltLevel);
-
+            float difference = d1 - TiltDistancePrev;
             TiltDistancePrev = d1;
+            touch1Prev = touch1Start = new Vector2(controls.CameraControl.Zoom1finger.ReadValue<Vector2>().x, 0);
+            //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+            tiltLevel -= (difference) * Time.deltaTime * 0.2f;
+
+            tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
+            Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.01f, tiltLevel);
+            Transposer.m_FollowOffset.y = Mathf.Lerp(11, 30, tiltLevel);
         }
     }
 
@@ -189,60 +255,60 @@ public class PinchDetection : MonoBehaviour
     //        yield return new WaitForEndOfFrame();
     //    }
     //}
-    private void ZoomStart()
-    {
+    //private void ZoomStart()
+    //{
 
-        ZoomCoroutine = StartCoroutine(ZoomDetection());
-    }
-    private void ZoomEnd()
-    {
-        StopCoroutine(ZoomCoroutine);
-    }
+    //    ZoomCoroutine = StartCoroutine(ZoomDetection());
+    //}
+    //private void ZoomEnd()
+    //{
+    //    StopCoroutine(ZoomCoroutine);
+    //}
 
-    IEnumerator ZoomDetection()
-    {
-        float prevDist = 0f;
-        float dist = 0f;
-        ////Vector2 prevPos1 = Vector2.zero;
-        ////Vector2 prevPos2 = Vector2.zero;
-        while (true)
-        {
-            ////Debug.Log(prevPos1);
-            ////Debug.Log(prevPos2);
-            dist = Vector2.Distance(controls.CameraControl.Zoom1finger.ReadValue<Vector2>(), controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+    //IEnumerator ZoomDetection()
+    //{
+    //    float prevDist = 0f;
+    //    float dist = 0f;
+    //    ////Vector2 prevPos1 = Vector2.zero;
+    //    ////Vector2 prevPos2 = Vector2.zero;
+    //    while (true)
+    //    {
+    //        ////Debug.Log(prevPos1);
+    //        ////Debug.Log(prevPos2);
+    //        dist = Vector2.Distance(controls.CameraControl.Zoom1finger.ReadValue<Vector2>(), controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
 
-            Vector2 curPos1 = controls.CameraControl.Zoom1finger.ReadValue<Vector2>();
-            ////Vector2 curPos2 = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
-            Debug.Log(curPos1);
-            ////Debug.Log(curPos2);
+    //        Vector2 curPos1 = controls.CameraControl.Zoom1finger.ReadValue<Vector2>();
+    //        ////Vector2 curPos2 = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+    //        Debug.Log(curPos1);
+    //        ////Debug.Log(curPos2);
 
-            ////Vector2 deltaPos1 = prevPos1 - curPos1;
-            ////Vector2 deltaPos2 = prevPos2 - curPos2;
-            if (prevDist != 0)
-                if (dist > prevDist)
-                {
-                    VirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y -= Mathf.Abs(dist - prevDist) / 10;
-                    //distance += 
-                    ////Debug.Log(deltaPos1);
-                    ////Debug.Log(deltaPos2);
-                }
-                else if (dist < prevDist)
-                {
-                    VirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y += Mathf.Abs(dist - prevDist) / 10;
+    //        ////Vector2 deltaPos1 = prevPos1 - curPos1;
+    //        ////Vector2 deltaPos2 = prevPos2 - curPos2;
+    //        if (prevDist != 0)
+    //            if (dist > prevDist)
+    //            {
+    //                VirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y -= Mathf.Abs(dist - prevDist) / 10;
+    //                //distance += 
+    //                ////Debug.Log(deltaPos1);
+    //                ////Debug.Log(deltaPos2);
+    //            }
+    //            else if (dist < prevDist)
+    //            {
+    //                VirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y += Mathf.Abs(dist - prevDist) / 10;
 
-                    //distance -= Mathf.Abs(dist - prevDist) / 50;
-                    //
-                    ////Debug.Log(Vector2.Dot(deltaPos1, deltaPos2));
+    //                //distance -= Mathf.Abs(dist - prevDist) / 50;
+    //                //
+    //                ////Debug.Log(Vector2.Dot(deltaPos1, deltaPos2));
 
-                    ////prevPos1 = curPos1;
-                    ////prevPos2 = curPos2;
-
-
-                }
+    //                ////prevPos1 = curPos1;
+    //                ////prevPos2 = curPos2;
 
 
-            prevDist = dist;
-            yield return new WaitForEndOfFrame();
-        }
-    }
+    //            }
+
+
+    //        prevDist = dist;
+    //        yield return new WaitForEndOfFrame();
+    //    }
+    //}
 }

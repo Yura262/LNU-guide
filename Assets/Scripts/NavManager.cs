@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +30,7 @@ public class NavManager : MonoBehaviour
     Vector3 prevposition;
     Auditory auditoryToGo;
     Vector3? startPosition;
+    public PinchDetection pinchDetection;
     void Start()
     {
         Navigating = false;
@@ -116,6 +118,20 @@ public class NavManager : MonoBehaviour
         }
         remainingDistance_ = RemainingDistance(agent.path.corners);
         NavPanelUI.PointTo(NextStopPosition);
+
+        //Vector3 previousLookAt = NextStopPosition;
+        StartCoroutine(SmoothLookAt(NextStopPosition, 1f));
+    }
+    IEnumerator SmoothLookAt(Vector3 worldPoint, float duration)
+    {
+        Quaternion startRot = pinchDetection.FollowObj.transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(worldPoint - pinchDetection.FollowObj.transform.position, pinchDetection.FollowObj.transform.up);
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            pinchDetection.FollowObj.transform.rotation = Quaternion.Slerp(startRot, endRot, t / duration);
+            yield return null;
+        }
+        pinchDetection.FollowObj.transform.rotation = endRot;
     }
     public void StartNavigation(int navId)
     {
