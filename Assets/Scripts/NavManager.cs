@@ -31,6 +31,7 @@ public class NavManager : MonoBehaviour
     Auditory auditoryToGo;
     Vector3? startPosition;
     public PinchDetection pinchDetection;
+    public GameObject pointer;
     void Start()
     {
         Navigating = false;
@@ -56,8 +57,15 @@ public class NavManager : MonoBehaviour
 
                 for (var i = 0; i < agent.path.corners.Length; i++)
                 {
-
-                    NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f);
+                    if (i == 0)
+                        NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f + Vector3.down);
+                    else if (i == 1)
+                    {
+                        pointer.transform.LookAt(agent.path.corners[i]);
+                        NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f);
+                    }
+                    else
+                        NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f);
                 }
             }
 
@@ -133,13 +141,13 @@ public class NavManager : MonoBehaviour
         }
         pinchDetection.FollowObj.transform.rotation = endRot;
     }
-    public void StartNavigation(int navId)
+    public void StartNavigation(int fromNavId, int toNavId)
     {
         startPosition = agent.gameObject.transform.position;
-        Debug.Log("navid" + navId.ToString());
+        Debug.Log("navid" + toNavId.ToString());
         foreach (var a in auditories)
             Debug.Log(a);
-        auditoryToGo = auditories.Find(x => x.navID == navId);
+        auditoryToGo = auditories.Find(x => x.navID == toNavId);
         if (auditoryToGo == null)
         {
             Debug.Log("Auditory not implemented");

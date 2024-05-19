@@ -35,7 +35,7 @@ public class PinchDetection : MonoBehaviour
     bool zoomRotateMode;
     bool tiltMode;
     bool modeSelected;
-
+    //public bool Enabled = false;
     Vector2 prevFingerLineForAngle;
     float prevAngle;
     Vector3 currAngleVector;
@@ -88,7 +88,7 @@ public class PinchDetection : MonoBehaviour
         };
         controls.CameraControl.Zoom2fingerpressdetection.started += _ => {/* pan = false;*/ };
     }
-    private void ResetCamera()
+    public void ResetCamera()
     {
         FollowObj.transform.eulerAngles = Vector3.zero;
         VirtualCamera.m_Lens.FieldOfView = 100;
@@ -96,7 +96,7 @@ public class PinchDetection : MonoBehaviour
     }
     private void Update()
     {
-
+        if (UI_Manager.instance.pickedbody.activeInHierarchy) return;
         //if (Input.GetMouseButtonDown(0))
         //{
         //    pan = true;
@@ -160,7 +160,7 @@ public class PinchDetection : MonoBehaviour
                 Vector2 travel2 = touch2Start - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
                 float angle = Vector2.Angle(travel1, travel2);
                 float generalAngle = Vector2.Angle(travel1 + travel2, Vector2.up);
-                if (angle < 8 && generalAngle < 8 && Mathf.Abs(d1) > 0.5f)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                if (angle < 12 && generalAngle < 12 && Mathf.Abs(d1) > 0.5f)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
