@@ -115,12 +115,15 @@ public class NavManager : MonoBehaviour
         Vector3 NextStopPosition = agent.path.corners[0];
         while (i < agent.path.corners.Length)
         {
-            if (lengthSoFar >= distanceToNextStop)
-                break;
+            Debug.Log(i);
+            Debug.Log(agent.path.corners.Length);
+            Debug.Log(agent.path.corners.Count());
             NextStopPosition = agent.path.corners[i];
             lengthSoFar += Vector3.Distance(previousCorner, NextStopPosition);
             previousCorner = NextStopPosition;
             i++;
+            if (lengthSoFar >= distanceToNextStop)
+                break;
         }
         remainingDistance_ = RemainingDistance(agent.path.corners);
         NavPanelUI.PointTo(NextStopPosition);
@@ -159,6 +162,7 @@ public class NavManager : MonoBehaviour
             return;
         }
         agent.SetDestination(auditoryToGo.Position);
+        auditoryToGo.Mark();
         if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
             Debug.Log("noPath");
         agent.isStopped = true;

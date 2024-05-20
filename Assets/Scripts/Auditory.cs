@@ -26,4 +26,8 @@ public class Auditory : MonoBehaviour//, PlaceLocation
     {
         return auditoryStruct.ToString();
     }
+    public void Mark()
+    {
+
+    }
 }
