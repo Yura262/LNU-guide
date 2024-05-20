@@ -9567,7 +9567,7 @@ MonoBehaviour:
   NavLineRenderer: {fileID: 546933993}
   pinchDetection: {fileID: 1844946377}
   pointer: {fileID: 575075557}
-  MarkerToShowMovingToAudGameobj: {fileID: 0}
+  MarkerToShowMovingToAudGameobj: {fileID: 483184748730956219, guid: bd4149a700fa3e64a9e2be822668ae4b, type: 3}
   topPanel: {fileID: 829952656}
 --- !u!4 &1888132009
 Transform:
