@@ -32,6 +32,7 @@ public class NavManager : MonoBehaviour
     Vector3? startPosition;
     public PinchDetection pinchDetection;
     public GameObject pointer;
+    public GameObject MarkerToShowMovingToAudGameobj;
     void Start()
     {
         Navigating = false;
@@ -180,6 +181,7 @@ public class NavManager : MonoBehaviour
     }
     public void Stop()
     {
+        auditoryToGo.Mark();
         startPosition = null;
         auditoryToGo = null;
         agent.isStopped = true;

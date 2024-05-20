@@ -9,13 +9,15 @@ public class Auditory : MonoBehaviour//, PlaceLocation
     public Vector3 Position;
     public int navID;
     public RomanAuiditoryStruct auditoryStruct;
-
+    GameObject marker;
 
     private NavMeshModifierVolume NMVolume;
     void Start()
     {
         NMVolume = GetComponent<NavMeshModifierVolume>();
         Position = NMVolume.transform.position;
+        marker = Instantiate(NavManager.instance.MarkerToShowMovingToAudGameobj, Position, Quaternion.identity);
+
     }
 
     void Update()
@@ -28,6 +30,6 @@ public class Auditory : MonoBehaviour//, PlaceLocation
     }
     public void Mark()
     {
-
+        marker.SetActive(!marker.activeInHierarchy);
     }
 }
