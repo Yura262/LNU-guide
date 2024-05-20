@@ -244,6 +244,8 @@ public class NavManager : MonoBehaviour
         UI_Manager.instance.StopNavigation();
         markAAuditories.Invoke();
         nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
+        DistanceToNextStop = 0;
+        remainingDistance_ = 0;
 
         //play ad :)
     }

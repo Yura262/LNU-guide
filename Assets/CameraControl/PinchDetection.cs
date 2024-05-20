@@ -257,7 +257,7 @@ public class PinchDetection : MonoBehaviour
 
 
             //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            tiltLevel += (difference) * Time.deltaTime * 0.1f;
+            tiltLevel -= (difference) * Time.deltaTime * 0.1f;
 
             tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
             Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.05f, tiltLevel);

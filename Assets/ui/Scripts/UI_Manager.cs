@@ -57,6 +57,8 @@ public class UI_Manager : MonoBehaviour
             element.GetComponentInChildren<TextMeshProUGUI>().text = entry.ToString();
             element.GetComponentInChildren<Button>().onClick.AddListener(delegate
             {
+                if (entry.navID == toA && toA != -1)
+                    return;
                 nothingFoundWindow.gameObject.SetActive(false);
                 fromA = entry.navID;
                 fromInputField.DeactivateInputField();
@@ -93,12 +95,15 @@ public class UI_Manager : MonoBehaviour
             element.GetComponentInChildren<TextMeshProUGUI>().text = entry.ToString();
             element.GetComponentInChildren<Button>().onClick.AddListener(delegate
             {
+                if (entry.navID == fromA && fromA != -1)
+                    return;
                 nothingFoundWindow.gameObject.SetActive(false);
                 toA = entry.navID;
                 toInputField.DeactivateInputField();
                 toInputField.text = entry.ToString();
                 for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
                     Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
+
             }
             );
         }
@@ -111,6 +116,7 @@ public class UI_Manager : MonoBehaviour
         {
             startNav(fromA, toA);
             HideSelectWindow();
+            Recenter();
         }
     }
     public void FromFieldEntered(string text)
