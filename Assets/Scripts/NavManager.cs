@@ -36,6 +36,7 @@ public class NavManager : MonoBehaviour
     public GameObject MarkerToShowMovingToAudGameobj;
     public GameObject topPanel;
     public UnityEvent markAAuditories;
+    public GameObject nextButton;
     void Start()
     {
         Navigating = false;
@@ -48,7 +49,7 @@ public class NavManager : MonoBehaviour
 
         foreach (var val in auditories)
             val.auditoryStruct = AuditorySearch.instance.Get(val.navID);
-
+        nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     void Update()
@@ -91,6 +92,7 @@ public class NavManager : MonoBehaviour
                 }
                 if (remainingDistance_ - DistanceToNextStop < 0.5f)
                 {
+                    nextButton.transform.eulerAngles = new Vector3(0, 0, -90);
                     //do red btn
                 }
 
@@ -120,6 +122,13 @@ public class NavManager : MonoBehaviour
     public void PanelClickNext()
     {
         agent.isStopped = false;
+        Debug.Log("click");
+        if (nextButton.transform.eulerAngles.z == -90)
+        {
+            Debug.Log("stop");
+            //stop
+            Stop();
+        }
         //StartCoroutine(moveForSomeDistance(DistanceToNextStop));
         //remainingDistance = DistanceToNextStop + RemainingDistance(agent.path.corners);
     }
@@ -131,9 +140,9 @@ public class NavManager : MonoBehaviour
         Vector3 NextStopPosition = agent.path.corners[0];
         while (i < agent.path.corners.Length)
         {
-            Debug.Log(i);
-            Debug.Log(agent.path.corners.Length);
-            Debug.Log(agent.path.corners.Count());
+            //Debug.Log(i);
+            //Debug.Log(agent.path.corners.Length);
+            //Debug.Log(agent.path.corners.Count());
             NextStopPosition = agent.path.corners[i];
             lengthSoFar += Vector3.Distance(previousCorner, NextStopPosition);
             previousCorner = NextStopPosition;
@@ -186,6 +195,7 @@ public class NavManager : MonoBehaviour
             Debug.Log("noPath");
         agent.isStopped = true;
         Navigating = true;
+        nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     public float RemainingDistance(Vector3[] points)
@@ -207,6 +217,7 @@ public class NavManager : MonoBehaviour
         agent.path.ClearCorners();
         UI_Manager.instance.StopNavigation();
         markAAuditories.Invoke();
+        nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
         //play ad :)
     }
 }
