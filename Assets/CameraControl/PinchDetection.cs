@@ -171,7 +171,8 @@ public class PinchDetection : MonoBehaviour
                 {
                     tiltMode = true;
                     modeSelected = true;
-                    touch2Start = new Vector2(touch1Start.x, 0);
+                    touch2Start = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                    touch2Start = new Vector2(touch2Start.x, 0);
                 }
             }
         }
