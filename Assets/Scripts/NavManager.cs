@@ -80,6 +80,11 @@ public class NavManager : MonoBehaviour
                     //stop navigation
                     Stop();
                 }
+                if (remainingDistance_ - DistanceToNextStop < 0.5f)
+                {
+                    //do red btn
+                }
+
                 movePanel(DistanceToNextStop);
 
             }
