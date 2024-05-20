@@ -91,9 +91,9 @@ public class PinchDetection : MonoBehaviour
     }
     public void ResetCamera()
     {
-        FollowObj.transform.eulerAngles = Vector3.zero;
+        FollowObj.transform.localEulerAngles = Vector3.zero;
         VirtualCamera.m_Lens.FieldOfView = 100;
-        FollowObj.transform.position = Vector3.zero;
+        FollowObj.transform.localPosition = Vector3.zero;
     }
     private void Update()
     {

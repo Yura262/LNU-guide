@@ -99,10 +99,28 @@ public class NavManager : MonoBehaviour
                 movePanel(DistanceToNextStop);
 
             }
+            if (remainingDistance_ - DistanceToNextStop < 0)
+            {
+                agent.isStopped = false;
+                remainingDistance_ = RemainingDistance(agent.path.corners);
+                if (remainingDistance_ < 0.5f)
+                {
+                    //stop navigation
+                    Stop();
+                }
+            }
             if (remainingDistance_ == 0 && auditoryToGo != null)
             {
                 remainingDistance_ = RemainingDistance(agent.path.corners);
-                DistanceToNextStop = remainingDistance_ / 5;
+                Debug.Log(remainingDistance_);
+                if (remainingDistance_ > 25)
+                    DistanceToNextStop = remainingDistance_ / 5;
+                else
+                    DistanceToNextStop = remainingDistance_ / 2;
+                if (remainingDistance_ - DistanceToNextStop < 0)
+                {
+                    //dis
+                }
                 movePanel(DistanceToNextStop);
             }
         }
@@ -128,7 +146,12 @@ public class NavManager : MonoBehaviour
         {
             Debug.Log("stop");
             //stop
-            Stop();
+
+            if (RemainingDistance(agent.path.corners) < 1f)
+            {
+                //stop navigation
+                Stop();
+            }
         }
         //StartCoroutine(moveForSomeDistance(DistanceToNextStop));
         //remainingDistance = DistanceToNextStop + RemainingDistance(agent.path.corners);
@@ -151,7 +174,7 @@ public class NavManager : MonoBehaviour
             if (lengthSoFar >= distanceToNextStop)
                 break;
         }
-        remainingDistance_ = RemainingDistance(agent.path.corners);
+        //remainingDistance_ = RemainingDistance(agent.path.corners);
         NavPanelUI.PointTo(NextStopPosition);
 
         //Vector3 previousLookAt = NextStopPosition;
@@ -221,6 +244,7 @@ public class NavManager : MonoBehaviour
         UI_Manager.instance.StopNavigation();
         markAAuditories.Invoke();
         nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
+
         //play ad :)
     }
 }
