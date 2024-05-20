@@ -9568,7 +9568,7 @@ MonoBehaviour:
   pinchDetection: {fileID: 1844946377}
   pointer: {fileID: 575075557}
   MarkerToShowMovingToAudGameobj: {fileID: 0}
-  topPanel: {fileID: 0}
+  topPanel: {fileID: 829952656}
 --- !u!4 &1888132009
 Transform:
   m_ObjectHideFlags: 0
