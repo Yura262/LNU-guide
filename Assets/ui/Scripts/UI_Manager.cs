@@ -46,7 +46,8 @@ public class UI_Manager : MonoBehaviour
         {
             //show nothing text
             if (text != "" && fromA != -1)
-                nothingFoundWindow.gameObject.SetActive(true);
+                if (text != AuditorySearch.instance.Get(fromA).ToString())
+                    nothingFoundWindow.gameObject.SetActive(true);
             Debug.Log("Nothing found");
         }
         else { nothingFoundWindow.gameObject.SetActive(false); }
@@ -58,8 +59,8 @@ public class UI_Manager : MonoBehaviour
             {
                 nothingFoundWindow.gameObject.SetActive(false);
                 fromA = entry.navID;
-                fromInputField.text = entry.ToString();
                 fromInputField.DeactivateInputField();
+                fromInputField.text = entry.ToString();
                 for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
                     Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
             }
@@ -80,7 +81,8 @@ public class UI_Manager : MonoBehaviour
         {
             //show nothing text
             if (text != "" && toA != -1)
-                nothingFoundWindow.gameObject.SetActive(true);
+                if (text != AuditorySearch.instance.Get(toA).ToString())
+                    nothingFoundWindow.gameObject.SetActive(true);
             Debug.Log("Nothing found");
         }
         else { nothingFoundWindow.gameObject.SetActive(false); }
@@ -93,8 +95,8 @@ public class UI_Manager : MonoBehaviour
             {
                 nothingFoundWindow.gameObject.SetActive(false);
                 toA = entry.navID;
-                toInputField.text = entry.ToString();
                 toInputField.DeactivateInputField();
+                toInputField.text = entry.ToString();
                 for (var i = SearchPanelScrollView.transform.childCount - 1; i >= 0; i--)
                     Destroy(SearchPanelScrollView.transform.GetChild(i).gameObject);
             }
