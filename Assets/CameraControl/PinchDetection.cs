@@ -173,7 +173,7 @@ public class PinchDetection : MonoBehaviour
                     tiltMode = true;
                     modeSelected = true;
                     skipfirsttiltcalculation = true;
-                    touch2Start = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+                    touch2Start = new Vector2(controls.CameraControl.Zoom2finger.ReadValue<Vector2>().x, 0);
                     //touch2Start = new Vector2(touch2Start.x, 0);
                     TiltDistancePrev = 0;
                 }
@@ -220,29 +220,29 @@ public class PinchDetection : MonoBehaviour
             //float difference = d1 - TiltDistancePrev;
             //TiltDistancePrev = d1;
             //touch1Prev = touch1Start = new Vector2(controls.CameraControl.Zoom1finger.ReadValue<Vector2>().x, 0);
-            //if (skipfirsttiltcalculation)
-            //{
-            //    float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            //    float difference = d2 - TiltDistancePrev;
-            //    TiltDistancePrev = d2;
-            //    touch2Prev = touch2Start = new Vector2(controls.CameraControl.Zoom2finger.ReadValue<Vector2>().x, 0);
-            //    Debug.Log((difference) * Time.deltaTime * 0.1f);
+            ////if (skipfirsttiltcalculation)
+            ////{
+            ////    float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+            ////    float difference = d2 - TiltDistancePrev;
+            ////    TiltDistancePrev = d2;
+            ////    touch2Prev = touch2Start = new Vector2(controls.CameraControl.Zoom2finger.ReadValue<Vector2>().x, 0);
+            ////    Debug.Log((difference) * Time.deltaTime * 0.1f);
 
 
-            //    //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            //    //tiltLevel -= (difference) * Time.deltaTime * 0.1f;
+            ////    //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+            ////    //tiltLevel -= (difference) * Time.deltaTime * 0.1f;
 
-            //    //tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
+            ////    //tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
 
 
-            //    skipfirsttiltcalculation = false;
-            //}
-            //else
-            //{
+            ////    skipfirsttiltcalculation = false;
+            ////}
+            ////else
+            ////{
             float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
             float difference = d2 - TiltDistancePrev;
             TiltDistancePrev = d2;
-            touch2Prev = touch2Start = controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
+            touch2Prev = touch2Start = new Vector2(controls.CameraControl.Zoom2finger.ReadValue<Vector2>().x, 0);
             Debug.Log((difference) * Time.deltaTime * 0.1f);
 
 
