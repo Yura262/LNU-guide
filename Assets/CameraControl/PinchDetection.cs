@@ -161,7 +161,13 @@ public class PinchDetection : MonoBehaviour
                 float angle = Vector2.Angle(travel1, travel2);
 
                 float generalAngle = Vector2.Angle(travel1 + travel2, Vector2.up);
-                if (angle < 15 && generalAngle < 15 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                Debug.Log("a");
+                Debug.Log(angle);
+                Debug.Log("ga");
+                Debug.Log(generalAngle);
+                Debug.Log("t2m");
+                Debug.Log(travel2.magnitude);
+                if (angle < 15 /*&& generalAngle < 15*/ && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
@@ -194,9 +200,9 @@ public class PinchDetection : MonoBehaviour
                 angleNow += 360;
             float angularDiff = angleNow - angleThen;
             float currAngle = Vector2.SignedAngle(LineBetweenFingers, prevFingerLineForAngle);
-            Debug.Log(currAngle);
+            //Debug.Log(currAngle);
             float differenceAngle = angularDiff;// (prevAngle - currAngle) * Time.deltaTime * 100;
-            Debug.Log(differenceAngle);
+            //Debug.Log(differenceAngle);
             prevAngle = currAngle;
             prevFingerLineForAngle = LineBetweenFingers;
 
