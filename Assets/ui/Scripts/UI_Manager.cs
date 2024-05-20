@@ -187,6 +187,9 @@ public class UI_Manager : MonoBehaviour
     }
     public void StopNavigation()
     {
+        fromA = -1;
+        toA = -1;
+
         //stop foreal
         //fold some panels 
     }
@@ -202,6 +205,7 @@ public class UI_Manager : MonoBehaviour
     {
         pinchDetection.ResetCamera();
     }
+
     void Update()
     {
 

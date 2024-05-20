@@ -18,8 +18,8 @@ public class Auditory : MonoBehaviour//, PlaceLocation
         Position = NMVolume.transform.position;
         marker = Instantiate(NavManager.instance.MarkerToShowMovingToAudGameobj, Position + Vector3.up * 8, Quaternion.identity);
         marker.SetActive(false);
+        NavManager.instance.markAAuditories.AddListener(Mark);
     }
-
     void Update()
     {
 
@@ -30,6 +30,13 @@ public class Auditory : MonoBehaviour//, PlaceLocation
     }
     public void Mark()
     {
-        marker.SetActive(!marker.activeInHierarchy);
+        if (this == NavManager.instance.auditoryToGo)
+        {
+            marker.SetActive(true);
+        }
+        else
+        {
+            marker.SetActive(false);
+        }
     }
 }

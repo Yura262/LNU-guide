@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Android;
 using UnityEngine.UIElements;
@@ -28,12 +29,13 @@ public class NavManager : MonoBehaviour
     public ToCameraRotator NavPanelUI;
     public LineRenderer NavLineRenderer;
     Vector3 prevposition;
-    Auditory auditoryToGo;
+    public Auditory auditoryToGo;
     Vector3? startPosition;
     public PinchDetection pinchDetection;
     public GameObject pointer;
     public GameObject MarkerToShowMovingToAudGameobj;
     public GameObject topPanel;
+    public UnityEvent markAAuditories;
     void Start()
     {
         Navigating = false;
@@ -175,7 +177,7 @@ public class NavManager : MonoBehaviour
             return;
         }
         agent.SetDestination(auditoryToGo.Position);
-        auditoryToGo.Mark();
+        markAAuditories.Invoke();
         if (!agent.CalculatePath(auditoryToGo.Position, agent.path))
             Debug.Log("noPath");
         agent.isStopped = true;
@@ -193,7 +195,7 @@ public class NavManager : MonoBehaviour
     }
     public void Stop()
     {
-        auditoryToGo.Mark();
+        markAAuditories.Invoke();
         startPosition = null;
         auditoryToGo = null;
         agent.isStopped = true;
