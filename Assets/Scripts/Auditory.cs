@@ -17,7 +17,7 @@ public class Auditory : MonoBehaviour//, PlaceLocation
         NMVolume = GetComponent<NavMeshModifierVolume>();
         Position = NMVolume.transform.position;
         marker = Instantiate(NavManager.instance.MarkerToShowMovingToAudGameobj, Position + Vector3.up * 8, Quaternion.identity);
-
+        marker.SetActive(false);
     }
 
     void Update()
