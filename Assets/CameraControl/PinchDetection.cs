@@ -160,7 +160,7 @@ public class PinchDetection : MonoBehaviour
                 Vector2 travel2 = touch2Start - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
                 float angle = Vector2.Angle(travel1, travel2);
                 float generalAngle = Vector2.Angle(travel1 + travel2, Vector2.up);
-                if (angle < 7 && generalAngle < 7 && Mathf.Abs((travel1 + travel2).magnitude) > 0.5f)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                if (angle < 7 && generalAngle < 15 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
@@ -205,12 +205,12 @@ public class PinchDetection : MonoBehaviour
         }
         if (tiltMode)
         {
-            float d1 = Vector2.Distance(touch1Start, controls.CameraControl.Zoom1finger.ReadValue<Vector2>());
-            float difference = d1 - TiltDistancePrev;
-            TiltDistancePrev = d1;
+            float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
+            float difference = d2 - TiltDistancePrev;
+            TiltDistancePrev = d2;
             touch1Prev = touch1Start = new Vector2(controls.CameraControl.Zoom1finger.ReadValue<Vector2>().x, 0);
             //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            tiltLevel -= (difference) * Time.deltaTime * 0.2f;
+            tiltLevel -= (difference) * Time.deltaTime * 0.1f;
 
             tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
             Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.05f, tiltLevel);
