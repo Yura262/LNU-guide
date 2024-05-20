@@ -58,10 +58,11 @@ public class NavManager : MonoBehaviour
                 for (var i = 0; i < agent.path.corners.Length; i++)
                 {
                     if (i == 0)
-                        NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f + Vector3.down);
+                        NavLineRenderer.SetPosition(i, agent.path.corners[i]);
                     else if (i == 1)
                     {
-                        pointer.transform.LookAt(agent.path.corners[i]);
+                        Vector3 lookObj = new Vector3(agent.path.corners[i].x, pointer.transform.position.y, agent.path.corners[i].z);
+                        pointer.transform.LookAt(lookObj);
                         NavLineRenderer.SetPosition(i, agent.path.corners[i] + Vector3.up * 0.5f);
                     }
                     else
@@ -129,9 +130,9 @@ public class NavManager : MonoBehaviour
 
         //Vector3 previousLookAt = NextStopPosition;
         StartCoroutine(SmoothLookAt(NextStopPosition, 1f));
-        //StartCoroutine(planCoor(NextStopPosition));
+        StartCoroutine(planCoor(NextStopPosition));
     }
-    IEnumerator planCoor(Vector3 pos) 
+    IEnumerator planCoor(Vector3 pos)
     {
         yield return new WaitForSeconds(1);
         StartCoroutine(SmoothLookAt(pos, 2f));

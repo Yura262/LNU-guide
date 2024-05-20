@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.541932, g: 0.5989861, b: 0.6697972, a: 1}
+  m_IndirectSpecularColor: {r: 0.5418971, g: 0.59896916, b: 0.6697855, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2218,7 +2218,7 @@ MonoBehaviour:
   m_VoxelSize: 0.086666666
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 402e93d938b3284489bbdae731515a45, type: 2}
-  m_BuildHeightMesh: 0
+  m_BuildHeightMesh: 1
 --- !u!4 &530846167
 Transform:
   m_ObjectHideFlags: 0
@@ -10361,7 +10361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalRotation.x
@@ -10369,7 +10369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalRotation.z
@@ -10381,7 +10381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edb736ec34e6fa14ebf2d6d01b12bedb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
