@@ -123,7 +123,8 @@ public class NavManager : MonoBehaviour
     {
         agent.isStopped = false;
         Debug.Log("click");
-        if (nextButton.transform.eulerAngles.z == -90)
+        Debug.Log(nextButton.transform.eulerAngles.z);
+        if (nextButton.transform.eulerAngles.z == -90f || nextButton.transform.eulerAngles.z == 270f)
         {
             Debug.Log("stop");
             //stop
@@ -179,6 +180,8 @@ public class NavManager : MonoBehaviour
     }
     public void StartNavigation(int fromNavId, int toNavId)
     {
+        Stop();
+        agent.gameObject.transform.position = auditories.Find(x => x.navID == fromNavId).Position;
         startPosition = agent.gameObject.transform.position;
         Debug.Log("navid" + toNavId.ToString());
         foreach (var a in auditories)
