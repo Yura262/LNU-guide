@@ -160,7 +160,7 @@ public class PinchDetection : MonoBehaviour
                 Vector2 travel2 = touch2Start - controls.CameraControl.Zoom2finger.ReadValue<Vector2>();
                 float angle = Vector2.Angle(travel1, travel2);
                 float generalAngle = Vector2.Angle(travel1 + travel2, Vector2.up);
-                if (angle < 12 && generalAngle < 12 && Mathf.Abs((travel1 + travel2).magnitude) > 0.5f)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                if (angle < 12 && generalAngle < 12)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps&& Mathf.Abs((travel1 + travel2).magnitude) > 0.5f
                 {
                     tiltMode = true;
                     modeSelected = true;
@@ -213,7 +213,7 @@ public class PinchDetection : MonoBehaviour
             tiltLevel -= (difference) * Time.deltaTime * 0.2f;
 
             tiltLevel = Mathf.Clamp(tiltLevel, 0, 1);
-            Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.01f, tiltLevel);
+            Transposer.m_FollowOffset.z = Mathf.Lerp(-12, -0.05f, tiltLevel);
             Transposer.m_FollowOffset.y = Mathf.Lerp(11, 30, tiltLevel);
         }
     }
