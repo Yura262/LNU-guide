@@ -205,10 +205,18 @@ public class PinchDetection : MonoBehaviour
         }
         if (tiltMode)
         {
+            //float d1 = Vector2.Distance(touch1Start, controls.CameraControl.Zoom1finger.ReadValue<Vector2>());
+            //float difference = d1 - TiltDistancePrev;
+            //TiltDistancePrev = d1;
+            //touch1Prev = touch1Start = new Vector2(controls.CameraControl.Zoom1finger.ReadValue<Vector2>().x, 0);
+
             float d2 = Vector2.Distance(touch2Start, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
             float difference = d2 - TiltDistancePrev;
             TiltDistancePrev = d2;
-            touch1Prev = touch1Start = new Vector2(controls.CameraControl.Zoom1finger.ReadValue<Vector2>().x, 0);
+            touch2Prev = touch2Start = new Vector2(controls.CameraControl.Zoom2finger.ReadValue<Vector2>().x, 0);
+
+
+
             //float d2 = Vector2.Distance(touch2Prev, controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
             tiltLevel -= (difference) * Time.deltaTime * 0.1f;
 
