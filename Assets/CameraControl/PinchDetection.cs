@@ -144,7 +144,7 @@ public class PinchDetection : MonoBehaviour
         if (zoom && !modeSelected)
         {
             float distBetweenFingers = Vector2.Distance(controls.CameraControl.Zoom1finger.ReadValue<Vector2>(), controls.CameraControl.Zoom2finger.ReadValue<Vector2>());
-            if (Mathf.Abs(StartTouchDistanceZoom - distBetweenFingers) > 3)//eps
+            if (Mathf.Abs(StartTouchDistanceZoom - distBetweenFingers) > 4)//eps
             {
                 zoomRotateMode = true;
                 modeSelected = true;
@@ -167,7 +167,7 @@ public class PinchDetection : MonoBehaviour
                 //Debug.Log(generalAngle);
                 //Debug.Log("t2m");
                 //Debug.Log(travel2.magnitude);
-                if (angle < 5 && generalAngle < 15 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                if (angle < 15 && generalAngle < 15 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
