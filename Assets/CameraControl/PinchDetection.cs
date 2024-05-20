@@ -168,7 +168,7 @@ public class PinchDetection : MonoBehaviour
                 //Debug.Log(generalAngle);
                 //Debug.Log("t2m");
                 //Debug.Log(travel2.magnitude);
-                if (angle < 15 && generalAngle < 40 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
+                if (angle < 15 && generalAngle < 20 && Mathf.Abs(travel2.magnitude) > 3)//Mathf.Abs(d1 - d2) < 5f && Mathf.Abs(d1) > 0.5f)//eps
                 {
                     tiltMode = true;
                     modeSelected = true;
