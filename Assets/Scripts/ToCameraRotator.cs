@@ -5,7 +5,7 @@ using UnityEngine;
 public class ToCameraRotator : MonoBehaviour
 {
     Camera mainC;
-    GameObject chToActivateOnNavigation;
+    public GameObject chToActivateOnNavigation;
     void Start()
     {
         mainC = Camera.main;
