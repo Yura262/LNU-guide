@@ -33,6 +33,7 @@ public class NavManager : MonoBehaviour
     public PinchDetection pinchDetection;
     public GameObject pointer;
     public GameObject MarkerToShowMovingToAudGameobj;
+    public GameObject topPanel;
     void Start()
     {
         Navigating = false;
@@ -50,6 +51,12 @@ public class NavManager : MonoBehaviour
 
     void Update()
     {
+        if (Navigating)
+        {
+            topPanel.SetActive(true);
+        }
+        else
+            topPanel.SetActive(false);
         if (agent.hasPath)
         {
             if (agent.path.corners.Length > 2)
