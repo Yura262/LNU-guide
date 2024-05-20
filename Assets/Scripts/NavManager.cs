@@ -129,7 +129,14 @@ public class NavManager : MonoBehaviour
 
         //Vector3 previousLookAt = NextStopPosition;
         StartCoroutine(SmoothLookAt(NextStopPosition, 1f));
+        //StartCoroutine(planCoor(NextStopPosition));
     }
+    IEnumerator planCoor(Vector3 pos) 
+    {
+        yield return new WaitForSeconds(1);
+        StartCoroutine(SmoothLookAt(pos, 2f));
+    }
+
     IEnumerator SmoothLookAt(Vector3 worldPoint, float duration)
     {
         Quaternion startRot = pinchDetection.FollowObj.transform.rotation;
