@@ -171,7 +171,7 @@ public class PinchDetection : MonoBehaviour
                 {
                     tiltMode = true;
                     modeSelected = true;
-                    touch1Start = new Vector2(touch1Start.x, 0);
+                    touch2Start = new Vector2(touch1Start.x, 0);
                 }
             }
         }
