@@ -145,13 +145,16 @@ public class NavManager : MonoBehaviour
         NavPanelUI.PointTo(NextStopPosition);
 
         //Vector3 previousLookAt = NextStopPosition;
-        StartCoroutine(SmoothLookAt(NextStopPosition, 1f));
+        //StartCoroutine(SmoothLookAt(NextStopPosition, 1f));
         StartCoroutine(planCoor(NextStopPosition));
     }
     IEnumerator planCoor(Vector3 pos)
     {
+        StartCoroutine(SmoothLookAt(pos, 1f));
         yield return new WaitForSeconds(1);
-        StartCoroutine(SmoothLookAt(pos, 2f));
+        StartCoroutine(SmoothLookAt(pos, 1f));
+        yield return new WaitForSeconds(1);
+        StartCoroutine(SmoothLookAt(pos, 1f));
     }
 
     IEnumerator SmoothLookAt(Vector3 worldPoint, float duration)

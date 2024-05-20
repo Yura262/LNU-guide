@@ -115,7 +115,7 @@ public class PinchDetection : MonoBehaviour
 
                 Vector3 direction = touchstart - controls.CameraControl.Pan.ReadValue<Vector2>(); ;
                 touchstart = controls.CameraControl.Pan.ReadValue<Vector2>();
-                direction = direction * Time.deltaTime * zoomLevel;
+                direction = direction * Time.deltaTime * zoomLevel * 0.5f;
                 Vector3 moveDir = FollowObj.transform.forward * direction.y + transform.right * direction.x;
                 FollowObj.transform.position += moveDir;// new Vector3(-direction.y, 0, direction.x);
                 //}
