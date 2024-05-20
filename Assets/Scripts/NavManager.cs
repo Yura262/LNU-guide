@@ -181,7 +181,7 @@ public class NavManager : MonoBehaviour
     public void StartNavigation(int fromNavId, int toNavId)
     {
         Stop();
-        agent.gameObject.transform.position = auditories.Find(x => x.navID == fromNavId).Position;
+        agent.Warp(auditories.Find(x => x.navID == fromNavId).Position);
         startPosition = agent.gameObject.transform.position;
         Debug.Log("navid" + toNavId.ToString());
         foreach (var a in auditories)
