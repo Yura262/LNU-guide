@@ -106,6 +106,7 @@ public class NavManager : MonoBehaviour
         }
         else
         {
+            NavLineRenderer.positionCount = 0;
         }
         if (transform.position != prevposition)
         {
@@ -195,14 +196,14 @@ public class NavManager : MonoBehaviour
     }
     public void Stop()
     {
-        markAAuditories.Invoke();
         startPosition = null;
         auditoryToGo = null;
         agent.isStopped = true;
-        agent.ResetPath();
         Navigating = false;
+        agent.ResetPath();
+        agent.path.ClearCorners();
         UI_Manager.instance.StopNavigation();
-
+        markAAuditories.Invoke();
         //play ad :)
     }
 }

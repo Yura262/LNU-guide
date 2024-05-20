@@ -189,7 +189,10 @@ public class UI_Manager : MonoBehaviour
     {
         fromA = -1;
         toA = -1;
-
+        fromInputField.text = "";
+        toInputField.text = "";
+        toInputField.DeactivateInputField();
+        fromInputField.DeactivateInputField();
         //stop foreal
         //fold some panels 
     }
