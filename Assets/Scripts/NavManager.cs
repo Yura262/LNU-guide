@@ -37,6 +37,7 @@ public class NavManager : MonoBehaviour
     public GameObject topPanel;
     public UnityEvent markAAuditories;
     public GameObject nextButton;
+    public TrailRenderer tr;
     void Start()
     {
         Navigating = false;
@@ -203,8 +204,8 @@ public class NavManager : MonoBehaviour
     }
     public void StartNavigation(int fromNavId, int toNavId)
     {
-        Stop();
         agent.Warp(auditories.Find(x => x.navID == fromNavId).Position);
+        Stop();
         startPosition = agent.gameObject.transform.position;
         Debug.Log("navid" + toNavId.ToString());
         foreach (var a in auditories)
@@ -246,7 +247,7 @@ public class NavManager : MonoBehaviour
         nextButton.transform.eulerAngles = new Vector3(0, 0, 0);
         DistanceToNextStop = 0;
         remainingDistance_ = 0;
-
+        //tr.Clear();
         //play ad :)
     }
 }
